@@ -41,7 +41,3 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-        env: 
-           DATASOURCE_URL: ${{ secrets.URL }}
-           DATASOURCE_USERNAME: ${{ secrets.USER }}
-           DATASOURCE_PASSWORD: ${{ secrets.PASSWORD }}
