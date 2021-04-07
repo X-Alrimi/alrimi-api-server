@@ -19,10 +19,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    env: 
-      DATASOURCE_URL: ${{secrets.URL}}
-      DATASOURCE_USERNAME: ${{secrets.USER}}
-      DATASOURCE_PASSWORD: ${{secrets.PASSWORD}}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -35,6 +31,10 @@ jobs:
         run: chmod +x gradlew
       - name: Build gradle
         run: ./gradlew build
+        env: 
+           DATASOURCE_URL: ${{secrets.URL}}
+           DATASOURCE_USERNAME: ${{secrets.USER}}
+           DATASOURCE_PASSWORD: ${{secrets.PASSWORD}}
       
 
       # Runs a single command using the runners shell
