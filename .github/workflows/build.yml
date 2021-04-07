@@ -20,9 +20,9 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     env: 
-      DATASOURCE_URL: ${{secret.DATASOURCE.URL}}
-      USER: ${{secret.DATASOURCE.USER}}
-      PASSWORD: ${{secret.DATASOURCE.PASSWORD}}
+      DATASOURCE_URL: ${{secrets.DATASOURCE.URL}}
+      USER: ${{secrets.DATASOURCE.USER}}
+      PASSWORD: ${{secrets.DATASOURCE.PASSWORD}}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
