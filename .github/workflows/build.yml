@@ -31,12 +31,7 @@ jobs:
         run: chmod +x gradlew
       - name: Build gradle
         run: ./gradlew build
-        env: 
-           DATASOURCE_URL: ${{secrets.URL}}
-           DATASOURCE_USERNAME: ${{secrets.USER}}
-           DATASOURCE_PASSWORD: ${{secrets.PASSWORD}}
       
-
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
@@ -46,3 +41,7 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+        env: 
+           DATASOURCE_URL: ${{secrets.URL}}
+           DATASOURCE_USERNAME: ${{secrets.USER}}
+           DATASOURCE_PASSWORD: ${{secrets.PASSWORD}}
