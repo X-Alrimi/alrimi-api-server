@@ -1,6 +1,9 @@
 package ssu.capstne.alrimi.api.model
 
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 
 @Entity
 class Company(
@@ -12,9 +15,4 @@ class Company(
 
     @Column(length = 1)
     var evaluation: Int,
-
-    @OneToMany(mappedBy = "company")
-    val celebrities: List<Celebrity>
-) {
-
-}
+)
