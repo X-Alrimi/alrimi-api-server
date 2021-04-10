@@ -1,7 +1,7 @@
-package ssu.capstne.alrimi.api.model.repository
+package ssu.capstne.alrimi.api.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
-import ssu.capstne.alrimi.api.model.entity.News
+import ssu.capstne.alrimi.api.model.News
 import java.util.*
 
 interface NewsRepository : JpaRepository<News, Long> {

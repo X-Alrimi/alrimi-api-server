@@ -1,4 +1,4 @@
-package ssu.capstne.alrimi.api.model.entity
+package ssu.capstne.alrimi.api.model
 
 import javax.persistence.*
 
@@ -13,8 +13,8 @@ class Company(
     @Column(length = 1)
     var evaluation: Int,
 
-    @OneToMany(mappedBy = "company",fetch = FetchType.EAGER)
-    val celebrities:List<Celebrity>
+    @OneToMany(mappedBy = "company")
+    val celebrities: List<Celebrity>
 ) {
 
 }

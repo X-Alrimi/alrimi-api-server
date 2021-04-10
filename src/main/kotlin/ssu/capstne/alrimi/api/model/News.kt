@@ -1,4 +1,4 @@
-package ssu.capstne.alrimi.api.model.entity
+package ssu.capstne.alrimi.api.model
 
 import java.util.*
 import javax.persistence.*
