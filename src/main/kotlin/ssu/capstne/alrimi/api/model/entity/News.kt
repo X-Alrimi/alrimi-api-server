@@ -1,9 +1,10 @@
 package ssu.capstne.alrimi.api.model.entity
 
+import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(indexes = [Index(name = "n_index_company_id", columnList = "company_id")])
+@Table(indexes = [Index(name = "news_title", columnList = "title")])
 class News(
     @Id @GeneratedValue
     val id: Long? = null,
@@ -15,7 +16,7 @@ class News(
     val link: String,
 
     @Column(nullable = false)
-    val createdAt: String,
+    val createdAt: Date,
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
