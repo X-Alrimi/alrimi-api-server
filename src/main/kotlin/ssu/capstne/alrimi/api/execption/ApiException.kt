@@ -1,4 +1,4 @@
-package ssu.capstne.alrimi.core.execption
+package ssu.capstne.alrimi.api.execption
 
 abstract class ApiException(msg: String) : RuntimeException(msg) {
 }
