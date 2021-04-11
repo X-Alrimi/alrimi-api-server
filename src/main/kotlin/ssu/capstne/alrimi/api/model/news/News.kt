@@ -1,5 +1,6 @@
-package ssu.capstne.alrimi.api.model
+package ssu.capstne.alrimi.api.model.news
 
+import ssu.capstne.alrimi.api.model.company.Company
 import java.util.*
 import javax.persistence.*
 

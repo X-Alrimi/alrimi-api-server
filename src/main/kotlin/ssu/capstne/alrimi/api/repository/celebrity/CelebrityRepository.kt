@@ -2,7 +2,7 @@ package ssu.capstne.alrimi.api.repository.celebrity
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import ssu.capstne.alrimi.api.model.Celebrity
+import ssu.capstne.alrimi.api.model.celebrity.Celebrity
 import ssu.capstne.alrimi.api.repository.celebrity.projection.CelebrityInfoTransfer
 
 interface CelebrityRepository : JpaRepository<Celebrity, Long> {

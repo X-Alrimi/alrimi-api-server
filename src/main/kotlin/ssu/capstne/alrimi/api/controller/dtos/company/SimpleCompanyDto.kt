@@ -1,6 +1,6 @@
 package ssu.capstne.alrimi.api.controller.dtos.company
 
-import ssu.capstne.alrimi.api.model.Company
+import ssu.capstne.alrimi.api.model.company.Company
 
 open class SimpleCompanyDto(company: Company) {
     val id = company.id

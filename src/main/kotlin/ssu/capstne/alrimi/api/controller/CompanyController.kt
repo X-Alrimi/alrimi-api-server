@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ssu.capstne.alrimi.api.controller.dtos.company.DetailCompanyDto
-import ssu.capstne.alrimi.api.controller.response.Response
-import ssu.capstne.alrimi.api.service.CelebrityService
-import ssu.capstne.alrimi.api.service.CompanyService
+import ssu.capstne.alrimi.api.controller.dtos.company.SimpleCompanyDto
+import ssu.capstne.alrimi.api.service.celebrity.CelebrityService
+import ssu.capstne.alrimi.api.service.company.CompanyService
 
 
 @RestController
@@ -18,17 +18,16 @@ class CompanyController(
 ) {
 
     @GetMapping
-    fun getCompanyList(): Response {
-        return Response(companyService.getSimpleCompanyList())
+    fun getCompanyList(): List<SimpleCompanyDto> {
+        return companyService.getSimpleCompanyList()
     }
 
     @GetMapping("/{id}")
-    fun getCompany(@PathVariable id: Long): Response {
-        return Response(
-            DetailCompanyDto(
-                companyService.getDetailCompany(id),
-                celebrityService.getCelebritiesList(id)
-            )
+    fun getCompany(@PathVariable id: Long): DetailCompanyDto {
+        return DetailCompanyDto(
+            companyService.getDetailCompany(id),
+            celebrityService.getCelebritiesList(id)
         )
+
     }
 }
