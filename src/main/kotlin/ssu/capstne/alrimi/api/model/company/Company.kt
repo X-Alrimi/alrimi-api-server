@@ -1,4 +1,4 @@
-package ssu.capstne.alrimi.api.model
+package ssu.capstne.alrimi.api.model.company
 
 import javax.persistence.Column
 import javax.persistence.Entity

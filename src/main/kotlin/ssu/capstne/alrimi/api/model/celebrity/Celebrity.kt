@@ -1,5 +1,6 @@
-package ssu.capstne.alrimi.api.model
+package ssu.capstne.alrimi.api.model.celebrity
 
+import ssu.capstne.alrimi.api.model.company.Company
 import javax.persistence.*
 
 @Entity

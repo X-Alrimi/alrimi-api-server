@@ -1,4 +1,4 @@
-package ssu.capstne.alrimi.api.model
+package ssu.capstne.alrimi.api.model.device
 
 import javax.persistence.Entity
 import javax.persistence.Id
