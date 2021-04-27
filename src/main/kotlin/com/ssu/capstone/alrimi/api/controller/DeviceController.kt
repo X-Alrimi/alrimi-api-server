@@ -3,6 +3,7 @@ package com.ssu.capstone.alrimi.api.controller
 import com.ssu.capstone.alrimi.api.controller.dtos.token.TokenDto
 import com.ssu.capstone.alrimi.api.model.device.Device
 import com.ssu.capstone.alrimi.api.service.device.DeviceService
+import com.ssu.capstone.alrimi.api.service.device.DeviceServiceImpl
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
