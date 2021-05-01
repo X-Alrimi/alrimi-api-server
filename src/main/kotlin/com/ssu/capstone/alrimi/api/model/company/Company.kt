@@ -14,5 +14,5 @@ class Company(
     var name: String,
 
     @Column(length = 1)
-    var evaluation: Int,
+    var evaluation: Int = 0,
 )
