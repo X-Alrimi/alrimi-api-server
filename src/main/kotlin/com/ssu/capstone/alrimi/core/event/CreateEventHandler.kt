@@ -23,6 +23,8 @@ class CreateEventHandler(
 
             for (file in company.listFiles()!!)
                 excelService.inputCompany(file)
+            for (file in celebrity.listFiles()!!)
+                excelService.inputCelebrity(file)
         }
     }
 }
