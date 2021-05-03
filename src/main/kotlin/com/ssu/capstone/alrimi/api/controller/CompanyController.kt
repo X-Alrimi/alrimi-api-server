@@ -3,9 +3,7 @@ package com.ssu.capstone.alrimi.api.controller
 import com.ssu.capstone.alrimi.api.controller.dtos.company.DetailCompanyDto
 import com.ssu.capstone.alrimi.api.controller.dtos.company.SimpleCompanyDto
 import com.ssu.capstone.alrimi.api.service.celebrity.CelebrityService
-import com.ssu.capstone.alrimi.api.service.celebrity.CelebrityServiceImpl
 import com.ssu.capstone.alrimi.api.service.company.CompanyService
-import com.ssu.capstone.alrimi.api.service.company.CompanyServiceImpl
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -32,6 +30,5 @@ class CompanyController(
             companyService.getCompany(id),
             celebrityService.getCelebritiesList(id)
         )
-
     }
 }
