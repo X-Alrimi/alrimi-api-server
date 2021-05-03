@@ -22,8 +22,6 @@ import javax.persistence.PersistenceContext
 class ExcelServiceImpl(
     private val celebrityRepository: CelebrityRepository,
     private val companyRepository: CompanyRepository,
-    @PersistenceContext private val em: EntityManager,
-
     ) : ExcelService {
 
     @Transactional
@@ -57,13 +55,11 @@ class ExcelServiceImpl(
             val companyId: Long = row.getCell(1).numericCellValue.toLong()
             val groupId = row.getCell(2).numericCellValue.toLong()
             val name: String = row.getCell(3).stringCellValue
-            val company:Company = companyRepository.findById(groupId).get()
 
             if (groupId == -1L)
                 celebrityRepository.save(id,companyId,null,name)
             else
                 celebrityRepository.save(id, companyId, groupId, name)
         }
-
     }
 }

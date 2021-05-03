@@ -13,10 +13,8 @@ class CreateEventHandler(
     @Value("\${spring.jpa.hibernate.ddl-auto}")
     val type: String
 ) {
-
     @EventListener
     fun applicationStartEventListener(event: ApplicationStartedEvent) {
-        println("EventStart")
         if (type == "create") {
             val company: File = File("src/main/kotlin/com/ssu/capstone/alrimi/excel/company")
             val celebrity: File = File("src/main/kotlin/com/ssu/capstone/alrimi/excel/celebrity")
