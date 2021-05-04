@@ -1,5 +1,6 @@
 package com.ssu.capstone.alrimi.core.execption
 
+import com.ssu.capstone.alrimi.api.service.celebrity.exception.CelebrityNotFoundException
 import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundException
 import org.springframework.core.annotation.Order
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -10,7 +11,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class GlobalExceptionHandler {
 
     @ExceptionHandler(CompanyNotFoundException::class)
-    fun classNotFoundHandler(e: ApiException) : ErrorResponse {
-        return ErrorResponse(e,ExceptionCode.COMPANY_001)
+    fun companyNotFoundHandler(e: ApiException): ErrorResponse {
+        return ErrorResponse(e, ExceptionCode.COMPANY_001)
+    }
+
+    @ExceptionHandler(CelebrityNotFoundException::class)
+    fun celebrityNotFoundHandler(e: ApiException): ErrorResponse {
+        return ErrorResponse(e, ExceptionCode.CELEBRITY_001)
     }
 }

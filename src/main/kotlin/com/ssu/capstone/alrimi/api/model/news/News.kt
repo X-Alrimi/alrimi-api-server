@@ -1,7 +1,7 @@
 package com.ssu.capstone.alrimi.api.model.news
 
+import com.ssu.capstone.alrimi.api.model.celebrity.Celebrity
 import com.ssu.capstone.alrimi.api.model.company.Company
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -17,10 +17,14 @@ class News(
     val link: String,
 
     @Column(nullable = false)
-    val createdAt: Date,
+    val createdAt: String,
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
-    val company: Company
+    val company: Company,
+
+    @ManyToOne
+    @JoinColumn(name = "celebrity_id", nullable = false)
+    val celebrity: Celebrity
 ) {
 }
