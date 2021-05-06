@@ -8,6 +8,7 @@ plugins {
     kotlin("plugin.jpa") version "1.4.31"
 }
 
+
 group = "com.ssu.capstone.alrimi"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
@@ -17,6 +18,10 @@ repositories {
 }
 
 dependencies {
+    implementation("org.apache.lucene:lucene-analyzers-nori:8.2.0")
+    implementation("org.apache.lucene:lucene-core:8.2.0")
+    implementation("org.apache.lucene:lucene-analyzers-common:8.2.0")
+    implementation("org.apache.lucene:lucene-queryparser:8.2.0")
     implementation("commons-io:commons-io:2.5")
     implementation("org.apache.poi:poi-ooxml:4.1.2")
     implementation("org.apache.poi:poi:4.1.2")
