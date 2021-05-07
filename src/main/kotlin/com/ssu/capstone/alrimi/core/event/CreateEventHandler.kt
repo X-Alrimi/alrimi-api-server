@@ -41,7 +41,7 @@ class CreateEventHandler(
             celebrityService.getCelebritiesList(company.id).forEach { celebrity ->
                 sb.append(celebrity.name).append("\n")
                 celebrity.member.forEach { member ->
-                    sb.append(member).append("\n")
+                    sb.append(member.name).append("\n")
                 }
             }
         }

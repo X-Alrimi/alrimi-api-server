@@ -6,13 +6,10 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class Company(
+data class Company(
     @Id @GeneratedValue
     val id: Long? = null,
 
     @Column(nullable = false)
-    var name: String,
-
-    @Column(length = 1)
-    var evaluation: Int = 0,
+    var name: String
 )

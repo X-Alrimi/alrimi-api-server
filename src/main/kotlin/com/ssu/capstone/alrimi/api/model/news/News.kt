@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 @Table(indexes = [Index(name = "news_title", columnList = "title")])
-class News(
+data class News(
     @Id @GeneratedValue
     val id: Long? = null,
 
@@ -22,9 +22,7 @@ class News(
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     val company: Company,
-
-    @ManyToOne
-    @JoinColumn(name = "celebrity_id", nullable = false)
-    val celebrity: Celebrity
+    @ManyToMany
+    val celebrities: List<Celebrity>
 ) {
 }

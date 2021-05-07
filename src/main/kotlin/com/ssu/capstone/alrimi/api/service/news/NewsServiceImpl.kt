@@ -1,7 +1,8 @@
 package com.ssu.capstone.alrimi.api.service.news
 
 import com.ssu.capstone.alrimi.api.controller.dtos.company.SimpleCompanyDto
-import com.ssu.capstone.alrimi.api.controller.dtos.news.NewsDto
+import com.ssu.capstone.alrimi.api.controller.dtos.news.DetailNewsDto
+import com.ssu.capstone.alrimi.api.controller.dtos.news.SimpleNewsDto
 import com.ssu.capstone.alrimi.api.model.celebrity.Celebrity
 import com.ssu.capstone.alrimi.api.model.company.Company
 import com.ssu.capstone.alrimi.api.model.news.News
@@ -18,23 +19,35 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class NewsServiceImpl(
     private val newsRepository: NewsRepository,
-    private val celebrityRepository: CelebrityRepository,
-    private val companyRepository: CompanyRepository
+    private val companyRepository: CompanyRepository,
+    private val celebrityRepository: CelebrityRepository
 ) : NewsService {
 
-    override fun save(newsDto: NewsDto, companyDto: SimpleCompanyDto, celebrityDto: CelebrityInfoTransfer) {
-        val celebrity: Celebrity =
-            celebrityRepository.findById(celebrityDto.id).orElseThrow { CelebrityNotFoundException() }
 
+    override fun save(companyDto: SimpleCompanyDto, celebritySet: Set<CelebrityInfoTransfer>, newsDto: DetailNewsDto) {
         val company: Company =
             companyRepository.findById(companyDto.id).orElseThrow { CompanyNotFoundException() }
+        val celebrityList: MutableList<Celebrity> = mutableListOf()
 
-        newsRepository.save(News(
-            title= newsDto.title,
-            link = newsDto.link,
-            createdAt = newsDto.createdAt,
-            celebrity = celebrity,
-            company = company
-        ))
+        celebritySet.forEach { celebrity ->
+            celebrityList.add(
+                celebrityRepository.findById(celebrity.id).orElseThrow { CelebrityNotFoundException() })
+        }
+        newsRepository.save(
+            News(
+                title = newsDto.title,
+                link = newsDto.link,
+                createdAt = newsDto.createdAt,
+                company = company,
+                celebrities = celebrityList
+            )
+        )
     }
+
+    override fun getNewsFromCompany(companyId: Long): List<SimpleNewsDto> {
+        return newsRepository.findTop4ByCompany_IdOrderByCreatedAtDesc(companyId).map { SimpleNewsDto(it) }
+
+    }
+
+
 }
