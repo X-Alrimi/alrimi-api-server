@@ -7,16 +7,14 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api")
 class ApiController(private val apiService: ApiService) {
 
     @PostMapping("/crawler")
-    fun getCrawledNews(@RequestBody crawledData: NewsCrawlerDto): MutableList<DetailNewsDto> {
-        var start = System.currentTimeMillis()
-        val data = apiService.findKeyword(crawledData)
-        println(System.currentTimeMillis() - start)
-        return data
+    fun getCrawledNews(@RequestBody @Valid crawledData: NewsCrawlerDto): MutableList<DetailNewsDto> {
+        return apiService.findKeyword(crawledData)
     }
 }

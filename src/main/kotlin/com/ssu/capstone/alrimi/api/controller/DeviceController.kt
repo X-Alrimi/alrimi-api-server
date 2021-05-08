@@ -3,11 +3,8 @@ package com.ssu.capstone.alrimi.api.controller
 import com.ssu.capstone.alrimi.api.controller.dtos.token.TokenDto
 import com.ssu.capstone.alrimi.api.model.device.Device
 import com.ssu.capstone.alrimi.api.service.device.DeviceService
-import com.ssu.capstone.alrimi.api.service.device.DeviceServiceImpl
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 
 @RestController
@@ -15,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController
 class DeviceController(private val deviceService: DeviceService) {
 
     @PostMapping("/token")
-    fun makeToken(dto: TokenDto): Device {
+    fun makeToken(@RequestBody @Valid dto: TokenDto): Device {
         return deviceService.saveToken(dto)
     }
 
     @DeleteMapping("/token")
-    fun deleteToken(dto: TokenDto): Boolean {
+    fun deleteToken(@RequestBody @Valid dto: TokenDto): Boolean {
         return deviceService.deleteToken(dto)
     }
 }

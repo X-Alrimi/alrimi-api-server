@@ -4,9 +4,11 @@ import com.ssu.capstone.alrimi.api.service.celebrity.exception.CelebrityNotFound
 import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundException
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 
 @Order(1)
 @RestControllerAdvice
@@ -22,5 +24,13 @@ class GlobalExceptionHandler {
     @ExceptionHandler(CelebrityNotFoundException::class)
     fun celebrityNotFoundHandler(e: ApiException): ErrorResponse {
         return ErrorResponse(e, ExceptionCode.CELEBRITY_001)
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(
+        value = [MethodArgumentNotValidException::class, MethodArgumentTypeMismatchException::class]
+    )
+    fun methodArgumentNotValidExceptionHandler(e: Exception): ErrorResponse {
+        return ErrorResponse(e, ExceptionCode.SYSTEM_001)
     }
 }
