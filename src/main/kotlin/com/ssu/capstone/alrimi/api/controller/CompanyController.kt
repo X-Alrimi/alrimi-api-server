@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/companies")
 class CompanyController(
     private val companyService: CompanyService,
-    private val celebrityService: CelebrityService,
-    private val newsService: NewsService
+    private val celebrityService: CelebrityService
 ) {
 
     @GetMapping
@@ -31,8 +30,7 @@ class CompanyController(
     fun getCompany(@PathVariable id: Long): DetailCompanyDto {
         return DetailCompanyDto(
             companyService.getCompany(id),
-            celebrityService.getCelebritiesList(id),
-            newsService.getNewsFromCompany(id)
+            celebrityService.getCelebritiesList(id)
         )
     }
 }

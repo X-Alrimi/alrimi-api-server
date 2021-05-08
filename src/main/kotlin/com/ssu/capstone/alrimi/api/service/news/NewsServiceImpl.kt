@@ -2,10 +2,12 @@ package com.ssu.capstone.alrimi.api.service.news
 
 import com.ssu.capstone.alrimi.api.controller.dtos.company.SimpleCompanyDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.DetailNewsDto
+import com.ssu.capstone.alrimi.api.controller.dtos.news.PagingNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.SimpleNewsDto
 import com.ssu.capstone.alrimi.api.model.celebrity.Celebrity
 import com.ssu.capstone.alrimi.api.model.company.Company
 import com.ssu.capstone.alrimi.api.model.news.News
+import com.ssu.capstone.alrimi.api.repository.PageUtil
 import com.ssu.capstone.alrimi.api.repository.celebrity.CelebrityRepository
 import com.ssu.capstone.alrimi.api.repository.celebrity.projection.CelebrityInfoTransfer
 import com.ssu.capstone.alrimi.api.repository.company.CompanyRepository
@@ -44,9 +46,11 @@ class NewsServiceImpl(
         )
     }
 
-    override fun getNewsFromCompany(companyId: Long): List<SimpleNewsDto> {
-        return newsRepository.findTop4ByCompany_IdOrderByCreatedAtDesc(companyId).map { SimpleNewsDto(it) }
+    override fun getNewsFromCompany(companyId: Long, page: Int): PagingNewsDto {
+        val company: Company = companyRepository.findById(companyId).orElseThrow { CompanyNotFoundException() }
+        val newsList = newsRepository.findAllByCompany(company, PageUtil(page - 1))
 
+        return PagingNewsDto(newsList.content.map { SimpleNewsDto(it) }, newsList.number+1, newsList.totalPages)
     }
 
 

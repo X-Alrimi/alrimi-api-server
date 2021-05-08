@@ -6,8 +6,7 @@ import com.ssu.capstone.alrimi.api.repository.celebrity.projection.CelebrityInfo
 
 class DetailCompanyDto(
     val company: SimpleCompanyDto,
-    val celebrities: List<CelebrityInfoTransfer>,
-    val news: List<SimpleNewsDto>
+    val celebrities: List<CelebrityInfoTransfer>
 ) {
 
 }
