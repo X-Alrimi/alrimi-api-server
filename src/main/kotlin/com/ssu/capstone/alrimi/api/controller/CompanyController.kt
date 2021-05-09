@@ -28,7 +28,7 @@ class CompanyController(
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("회사 세부정보 가져오기")
-    fun getCompany(@PathVariable @Valid id: Long): DetailCompanyDto {
+    fun getCompany(@PathVariable id: Long): DetailCompanyDto {
         return DetailCompanyDto(
             companyService.getCompany(id),
             celebrityService.getCelebritiesList(id)

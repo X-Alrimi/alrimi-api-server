@@ -5,13 +5,13 @@ import org.springframework.format.annotation.DateTimeFormat
 import javax.validation.constraints.NotBlank
 
 data class DetailNewsDto(
-    @NotBlank
+    @field:NotBlank
     var title: String,
-    @URL
+    @field:URL
     var link: String,
-    @NotBlank
+    @field:NotBlank
     var text: String,
-    @DateTimeFormat(pattern = "yyyy-MM-dd-hh:mm")
+    @field:DateTimeFormat(pattern = "yyyy-MM-dd-hh:mm")
     var createdAt: String
 ) {
 }

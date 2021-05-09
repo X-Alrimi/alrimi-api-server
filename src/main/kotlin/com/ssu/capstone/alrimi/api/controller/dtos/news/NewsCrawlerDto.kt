@@ -1,8 +1,9 @@
 package com.ssu.capstone.alrimi.api.controller.dtos.news
 
-import javax.validation.constraints.NotEmpty
+import javax.validation.Valid
 
 data class NewsCrawlerDto(
-    @NotEmpty
+
+    @field:Valid
     val news: List<DetailNewsDto>
 )

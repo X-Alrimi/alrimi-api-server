@@ -2,6 +2,7 @@ package com.ssu.capstone.alrimi.api.controller
 
 import com.ssu.capstone.alrimi.api.controller.dtos.news.PagingNewsDto
 import com.ssu.capstone.alrimi.api.service.news.NewsService
+import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -12,7 +13,8 @@ class NewsController(private val newsService: NewsService) {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun getNews(@RequestParam  @Valid companyId: Long, @RequestParam @Valid page: Int): PagingNewsDto {
+    @ApiOperation("연관된 회사 관련 뉴스 가져오기")
+    fun getNews(@RequestParam companyId: Long, @RequestParam page: Int): PagingNewsDto {
         return newsService.getNewsFromCompany(companyId, page)
     }
 }
