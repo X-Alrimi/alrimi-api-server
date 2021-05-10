@@ -30,7 +30,7 @@ jobs:
       - name: Grant excute permission to gradlew
         run: chmod +x ./gradlew
       - name: Build gradle
-        run: ./gradlew build
+        run: ./gradlew build -x test
       
       # Runs a single command using the runners shell
       - name: Run a one-line script
