@@ -1,4 +1,4 @@
-package com.ssu.capstone.alrimi.core.util
+package com.ssu.capstone.alrimi.core.util.ngram
 
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.TokenStream

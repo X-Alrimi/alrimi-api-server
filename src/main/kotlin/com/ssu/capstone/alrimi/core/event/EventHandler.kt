@@ -2,9 +2,9 @@ package com.ssu.capstone.alrimi.core.event
 
 import com.ssu.capstone.alrimi.api.service.celebrity.CelebrityService
 import com.ssu.capstone.alrimi.api.service.company.CompanyService
+import com.ssu.capstone.alrimi.api.service.device.DeviceService
 import com.ssu.capstone.alrimi.api.service.excel.ExcelService
-import com.ssu.capstone.alrimi.core.util.CustomNgramAnalyzer
-import org.apache.lucene.analysis.ko.KoreanAnalyzer
+import com.ssu.capstone.alrimi.core.util.ngram.CustomNgramAnalyzer
 import org.apache.lucene.analysis.ko.dict.UserDictionary
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.event.ApplicationStartedEvent
@@ -14,12 +14,13 @@ import java.io.File
 import java.io.StringReader
 
 @Component
-class CreateEventHandler(
-        private val excelService: ExcelService,
-        private val celebrityService: CelebrityService,
-        private val companyService: CompanyService,
-        @Value("\${spring.jpa.hibernate.ddl-auto}")
-        val type: String
+class EventHandler(
+    private val excelService: ExcelService,
+    private val celebrityService: CelebrityService,
+    private val companyService: CompanyService,
+    private val deviceService: DeviceService,
+    @Value("\${spring.jpa.hibernate.ddl-auto}")
+    val type: String
 ) {
     @EventListener
     fun applicationStartEventListener(event: ApplicationStartedEvent) {
@@ -35,8 +36,13 @@ class CreateEventHandler(
         CustomNgramAnalyzer.createInstance(makeUserDictionary())
     }
 
+    @EventListener
+    fun alarmEventListener(event: AlarmEvent) {
+        deviceService.sendAlarm(event)
+    }
+
     private fun makeUserDictionary(): UserDictionary {
-        var sb: StringBuilder = StringBuilder()
+        val sb: StringBuilder = StringBuilder()
         companyService.getSimpleCompanyList().forEach { company ->
             celebrityService.getCelebritiesList(company.id).forEach { celebrity ->
                 sb.append(celebrity.name).append("\n")

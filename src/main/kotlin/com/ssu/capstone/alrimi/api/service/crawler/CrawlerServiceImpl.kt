@@ -1,24 +1,25 @@
-package com.ssu.capstone.alrimi.api.service.api
+package com.ssu.capstone.alrimi.api.service.crawler
 
+import com.ssu.capstone.alrimi.api.controller.dtos.news.AlarmNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.DetailNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.NewsCrawlerDto
 import com.ssu.capstone.alrimi.api.repository.celebrity.projection.CelebrityInfoTransfer
 import com.ssu.capstone.alrimi.api.service.celebrity.CelebrityService
 import com.ssu.capstone.alrimi.api.service.company.CompanyService
 import com.ssu.capstone.alrimi.api.service.news.NewsService
-import com.ssu.capstone.alrimi.core.util.CustomNgramAnalyzer
+import com.ssu.capstone.alrimi.core.util.ngram.CustomNgramAnalyzer
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class ApiServiceImpl(
+class CrawlerServiceImpl(
     private val companyService: CompanyService,
     private val celebrityService: CelebrityService,
     private val newsService: NewsService
-) : ApiService {
-    override fun findKeyword(crawledData: NewsCrawlerDto): MutableList<DetailNewsDto> {
-        val result: MutableList<DetailNewsDto> = mutableListOf()
+) : CrawlerService {
+    override fun findKeyword(crawledData: NewsCrawlerDto): MutableList<AlarmNewsDto> {
+        val result: MutableList<AlarmNewsDto> = mutableListOf()
         val companies = companyService.getSimpleCompanyList()
 
         for (news in crawledData.news) {
@@ -36,11 +37,15 @@ class ApiServiceImpl(
                     }
                 }
                 if (flag) {
-                    result.add(news)
+                    result.add(AlarmNewsDto(company.name,news))
                     newsService.save(company, celebritySet, news)
                 }
             }
         }
         return result
+    }
+
+    override fun findCritical(news: AlarmNewsDto): Boolean {
+        return true
     }
 }

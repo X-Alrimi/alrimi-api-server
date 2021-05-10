@@ -1,4 +1,4 @@
-package com.ssu.capstone.alrimi.core.util
+package com.ssu.capstone.alrimi.core.util.common
 
 import java.util.*
 
