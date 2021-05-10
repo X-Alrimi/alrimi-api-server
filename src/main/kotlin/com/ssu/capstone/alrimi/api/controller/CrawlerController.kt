@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/api")
-class ApiController(private val apiService: ApiService) {
+@RequestMapping("/crawler")
+class CrawlerController(private val apiService: ApiService) {
 
-    @PostMapping("/crawler")
+    @PostMapping
     @ApiOperation("크롤링한 뉴스 데이터 전달 받는 API")
     fun getCrawledNews(@RequestBody @Valid crawledData: NewsCrawlerDto): MutableList<DetailNewsDto> {
         return apiService.findKeyword(crawledData)

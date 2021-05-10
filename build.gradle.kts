@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    implementation ("com.google.firebase:firebase-admin:6.8.1")
     implementation("org.apache.lucene:lucene-analyzers-nori:8.2.0")
     implementation("org.apache.lucene:lucene-core:8.2.0")
     implementation("org.apache.lucene:lucene-analyzers-common:8.2.0")
