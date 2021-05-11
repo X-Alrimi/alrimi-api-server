@@ -1,5 +1,6 @@
 package com.ssu.capstone.alrimi.api.service.device
 
+import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingException
 import com.google.firebase.messaging.Message
@@ -16,10 +17,11 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class DeviceServiceImpl(
-    private val deviceRepository: DeviceRepository
+    private val deviceRepository: DeviceRepository,
+
 ) : DeviceService {
 
-    private final val messageSender = FirebaseMessaging.getInstance()
+    val messageSender = FirebaseMessaging.getInstance(FirebaseApp.getInstance("X-Alrimi"))
 
     override fun saveToken(dto: TokenDto): Device {
         return deviceRepository.save(Device(dto.token))
@@ -29,7 +31,7 @@ class DeviceServiceImpl(
         return deviceRepository.deleteByToken(dto.token)
     }
 
-    override fun sendAlarm(event:AlarmEvent) {
+    override fun sendAlarm(event: AlarmEvent) {
         val devices = deviceRepository.findAll()
         devices.forEach { device ->
             try {
@@ -37,7 +39,7 @@ class DeviceServiceImpl(
                     .setToken(device.token)
                     .setNotification(Notification(AlarmUtil.getMessageTitle(event.company), event.title))
                     .build()
-                messageSender.send(message)
+                FirebaseMessaging.getInstance(FirebaseApp.getInstance("X-Alrimi")).send(message)
             } catch (e: FirebaseMessagingException) {
                 e.printStackTrace()
             }

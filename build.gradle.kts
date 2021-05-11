@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    implementation ("org.springframework.boot:spring-boot-configuration-processor")
     implementation ("com.google.firebase:firebase-admin:6.8.1")
     implementation("org.apache.lucene:lucene-analyzers-nori:8.2.0")
     implementation("org.apache.lucene:lucene-core:8.2.0")
