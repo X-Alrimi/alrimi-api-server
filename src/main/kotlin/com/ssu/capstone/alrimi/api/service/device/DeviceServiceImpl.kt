@@ -19,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 class DeviceServiceImpl(
     private val deviceRepository: DeviceRepository,
 
-) : DeviceService {
-
-    val messageSender = FirebaseMessaging.getInstance(FirebaseApp.getInstance("X-Alrimi"))
-
+    ) : DeviceService {
     override fun saveToken(dto: TokenDto): Device {
         return deviceRepository.save(Device(dto.token))
     }
@@ -38,6 +35,7 @@ class DeviceServiceImpl(
                 val message = Message.builder()
                     .setToken(device.token)
                     .setNotification(Notification(AlarmUtil.getMessageTitle(event.company), event.title))
+                    .putData("link", event.link)
                     .build()
                 FirebaseMessaging.getInstance(FirebaseApp.getInstance("X-Alrimi")).send(message)
             } catch (e: FirebaseMessagingException) {

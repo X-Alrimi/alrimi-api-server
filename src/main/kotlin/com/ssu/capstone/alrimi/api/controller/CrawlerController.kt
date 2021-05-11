@@ -31,7 +31,8 @@ class CrawlerController(
             eventPublisher.publishEvent(
                 AlarmEvent(
                     news.company,
-                    news.news.title
+                    news.news.title,
+                    news.news.link
                 )
             )
         }
