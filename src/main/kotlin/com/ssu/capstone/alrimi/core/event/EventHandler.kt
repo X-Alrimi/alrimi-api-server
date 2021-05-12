@@ -9,6 +9,7 @@ import org.apache.lucene.analysis.ko.dict.UserDictionary
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.event.ApplicationStartedEvent
 import org.springframework.context.event.EventListener
+import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.StringReader
@@ -22,6 +23,7 @@ class EventHandler(
     @Value("\${spring.jpa.hibernate.ddl-auto}")
     val type: String
 ) {
+    @Order(1)
     @EventListener
     fun applicationStartEventListener(event: ApplicationStartedEvent) {
         if (type == "create") {
@@ -34,11 +36,33 @@ class EventHandler(
                 excelService.inputCelebrity(file)
         }
         CustomNgramAnalyzer.createInstance(makeUserDictionary())
+        CustomNgramAnalyzer.createKeywordInstance(makeKeywordDictionary())
+    }
+
+    @Order(2)
+    @EventListener
+    fun applicationStartEventListener2(event: ApplicationStartedEvent) {
+        if (type == "create") {
+            val newsDir = File("src/main/kotlin/com/ssu/capstone/alrimi/excel/news")
+            newsDir.listFiles()?.forEach { yearDir ->
+                yearDir?.listFiles()?.forEach { news ->
+                    excelService.writeCSV(excelService.inputNews(news))
+                }
+            }
+            println("Finish")
+        }
     }
 
     @EventListener
     fun alarmEventListener(event: AlarmEvent) {
         deviceService.sendAlarm(event)
+    }
+
+    private fun makeKeywordDictionary(): UserDictionary {
+        val sb: StringBuilder = StringBuilder()
+        CustomNgramAnalyzer.keyword.forEach { keyword -> sb.append(keyword).append("\n") }
+
+        return UserDictionary.open(StringReader(sb.toString()))
     }
 
     private fun makeUserDictionary(): UserDictionary {

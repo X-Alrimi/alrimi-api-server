@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class DeviceServiceImpl(
     private val deviceRepository: DeviceRepository,
-
     ) : DeviceService {
     override fun saveToken(dto: TokenDto): Device {
         return deviceRepository.save(Device(dto.token))

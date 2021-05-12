@@ -19,9 +19,13 @@ data class News(
     @Column(nullable = false)
     val createdAt: String,
 
+    @Column(nullable = false)
+    val isCritical: Boolean = false,
+
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     val company: Company,
+
     @ManyToMany
     val celebrities: List<Celebrity>
 ) {
