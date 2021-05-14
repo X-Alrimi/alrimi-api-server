@@ -11,4 +11,18 @@ object DateUtil {
 
         return calendar.time
     }
+
+    /**
+     * 최근 알람이 하루 이내이면 알람 발생 x
+     */
+    fun canAlarm(date: Date?): Boolean {
+        if (date == null)
+            return true
+        else {
+            calendar.time = date
+            calendar.set(Calendar.DATE, 1)
+
+            return calendar.before(Date())
+        }
+    }
 }

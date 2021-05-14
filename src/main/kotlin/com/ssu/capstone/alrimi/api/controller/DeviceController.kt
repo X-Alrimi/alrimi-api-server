@@ -1,5 +1,6 @@
 package com.ssu.capstone.alrimi.api.controller
 
+import com.ssu.capstone.alrimi.api.controller.dtos.token.KeywordDto
 import com.ssu.capstone.alrimi.api.controller.dtos.token.TokenDto
 import com.ssu.capstone.alrimi.api.model.device.Device
 import com.ssu.capstone.alrimi.api.service.device.DeviceService
@@ -22,5 +23,17 @@ class DeviceController(private val deviceService: DeviceService) {
     @ApiOperation("FCM 디바이스 토큰 삭제하기")
     fun deleteToken(@RequestBody @Valid dto: TokenDto): Boolean {
         return deviceService.deleteToken(dto)
+    }
+
+    @PostMapping("/keyword")
+    @ApiOperation("키워드 추가")
+    fun addKeyword(keywordDto: KeywordDto):Boolean {
+        return deviceService.addKeyword(keywordDto)
+    }
+
+    @DeleteMapping("/keyword")
+    @ApiOperation("키워드 삭제")
+    fun deleteKeyword(keywordDto: KeywordDto):Boolean {
+        return deviceService.deleteKeyword(keywordDto)
     }
 }

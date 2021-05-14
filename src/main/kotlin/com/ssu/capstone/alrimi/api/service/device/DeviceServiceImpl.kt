@@ -3,23 +3,31 @@ package com.ssu.capstone.alrimi.api.service.device
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingException
-import com.google.firebase.messaging.Message
+import com.google.firebase.messaging.MulticastMessage
 import com.google.firebase.messaging.Notification
+import com.ssu.capstone.alrimi.api.controller.dtos.token.KeywordDto
 import com.ssu.capstone.alrimi.api.controller.dtos.token.TokenDto
+import com.ssu.capstone.alrimi.api.model.company.Company
 import com.ssu.capstone.alrimi.api.model.device.Device
+import com.ssu.capstone.alrimi.api.repository.company.CompanyRepository
 import com.ssu.capstone.alrimi.api.repository.device.DeviceRepository
+import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundException
+import com.ssu.capstone.alrimi.api.service.device.exception.TokenNotExistException
 import com.ssu.capstone.alrimi.core.event.AlarmEvent
 import com.ssu.capstone.alrimi.core.util.common.AlarmUtil
+import com.ssu.capstone.alrimi.core.util.common.DateUtil
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 
 @Service
 @Transactional
 class DeviceServiceImpl(
     private val deviceRepository: DeviceRepository,
+    private val companyRepository: CompanyRepository
 
-    ) : DeviceService {
+) : DeviceService {
     override fun saveToken(dto: TokenDto): Device {
         return deviceRepository.save(Device(dto.token))
     }
@@ -29,18 +37,40 @@ class DeviceServiceImpl(
     }
 
     override fun sendAlarm(event: AlarmEvent) {
-        val devices = deviceRepository.findAll()
-        devices.forEach { device ->
-            try {
-                val message = Message.builder()
-                    .setToken(device.token)
-                    .setNotification(Notification(AlarmUtil.getMessageTitle(event.company), event.title))
-                    .putData("link", event.link)
-                    .build()
-                FirebaseMessaging.getInstance(FirebaseApp.getInstance("X-Alrimi")).send(message)
-            } catch (e: FirebaseMessagingException) {
-                e.printStackTrace()
-            }
+        val company = companyRepository.findByName(event.company).orElseThrow { CompanyNotFoundException() }
+        try {
+            val multicast = MulticastMessage.builder().addAllTokens(company.devices.map { device -> device.token })
+                .setNotification(Notification(AlarmUtil.getMessageTitle(event.company), event.title))
+                .putData("link", event.link)
+                .build()
+            FirebaseMessaging.getInstance(FirebaseApp.getInstance("X-Alrimi")).sendMulticast(multicast).successCount
+        } catch (e: FirebaseMessagingException) {
+            e.printStackTrace()
         }
+    }
+
+    override fun addKeyword(keywordDto: KeywordDto): Boolean {
+        val company = companyRepository.findByName(keywordDto.keyword)
+            .orElseThrow { CompanyNotFoundException() }
+        val device = deviceRepository.findById(keywordDto.token).orElseThrow { TokenNotExistException() }
+        return company.devices.add(device)
+
+    }
+
+    override fun deleteKeyword(keywordDto: KeywordDto): Boolean {
+        val company = companyRepository.findByName(keywordDto.keyword)
+            .orElseThrow { CompanyNotFoundException() }
+        val device = deviceRepository.findById(keywordDto.token).orElseThrow { TokenNotExistException() }
+        return company.devices.remove(device)
+    }
+
+    override fun canAlarm(companyName: String): Boolean {
+        val company: Company = companyRepository.findByName(companyName).orElseThrow { CompanyNotFoundException() }
+
+        return if(DateUtil.canAlarm(company.recentAlarm)) {
+            company.recentAlarm = Date()
+            true
+        }else
+            false
     }
 }
