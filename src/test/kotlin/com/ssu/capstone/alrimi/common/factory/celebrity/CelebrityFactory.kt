@@ -2,15 +2,15 @@ package com.ssu.capstone.alrimi.common.factory.celebrity
 
 import com.ssu.capstone.alrimi.api.model.celebrity.Celebrity
 import com.ssu.capstone.alrimi.api.repository.celebrity.projection.CelebrityInfoTransfer
-import com.ssu.capstone.alrimi.common.factory.CompanyFactory
+import com.ssu.capstone.alrimi.common.factory.comany.CompanyFactory
 
 object CelebrityFactory {
 
-    fun createMockCelebrity(keyword: String?): Celebrity {
+    private fun createMockCelebrity(keyword: String?): Celebrity {
         return if (keyword == null)
-            Celebrity(1, "MockCelebrity", CompanyFactory.createMockCompany(), mutableListOf())
+            Celebrity(1, "MockCelebrity", CompanyFactory.createMockCompany(1), mutableListOf())
         else
-            Celebrity(1, keyword, CompanyFactory.createMockCompany(), mutableListOf())
+            Celebrity(1, keyword, CompanyFactory.createMockCompany(1), mutableListOf())
     }
 
     fun findAllByCompany_IdAndParentIdIsNullMockingFunction(): List<Celebrity> {
