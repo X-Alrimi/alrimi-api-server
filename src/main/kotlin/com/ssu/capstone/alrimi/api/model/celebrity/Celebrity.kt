@@ -17,7 +17,7 @@ data class Celebrity(
     val company: Company,
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id", nullable = true)
-    val member: List<Celebrity>,
+    val member: MutableList<Celebrity>,
 ) {
     @ManyToMany(mappedBy = "celebrities")
     val news: List<News> = mutableListOf()
