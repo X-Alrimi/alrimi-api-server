@@ -14,6 +14,7 @@ import com.ssu.capstone.alrimi.api.repository.company.CompanyRepository
 import com.ssu.capstone.alrimi.api.repository.news.NewsRepository
 import com.ssu.capstone.alrimi.api.service.celebrity.exception.CelebrityNotFoundException
 import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundException
+import com.ssu.capstone.alrimi.core.execption.InvalidPageException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -25,8 +26,7 @@ class NewsServiceImpl(
     private val celebrityRepository: CelebrityRepository
 ) : NewsService {
 
-
-    override fun save(companyDto: SimpleCompanyDto, celebritySet: Set<CelebrityInfoTransfer>, newsDto: DetailNewsDto) {
+    override fun save(companyDto: SimpleCompanyDto, celebritySet: Set<CelebrityInfoTransfer>, news: DetailNewsDto) {
         val company: Company =
             companyRepository.findById(companyDto.id).orElseThrow { CompanyNotFoundException() }
         val celebrityList: MutableList<Celebrity> = mutableListOf()
@@ -37,9 +37,9 @@ class NewsServiceImpl(
         }
         newsRepository.save(
             News(
-                title = newsDto.title,
-                link = newsDto.link,
-                createdAt = newsDto.createdAt,
+                title = news.title,
+                link = news.link,
+                createdAt = news.createdAt,
                 company = company,
                 celebrities = celebrityList
             )
@@ -47,10 +47,13 @@ class NewsServiceImpl(
     }
 
     override fun getNewsFromCompany(companyId: Long, page: Int): PagingNewsDto {
+        if (page < 1)
+            throw InvalidPageException()
+
         val company: Company = companyRepository.findById(companyId).orElseThrow { CompanyNotFoundException() }
         val newsList = newsRepository.findAllByCompany(company, PageUtil(page - 1))
 
-        return PagingNewsDto(newsList.content.map { SimpleNewsDto(it) }, newsList.number+1, newsList.totalPages)
+        return PagingNewsDto(newsList.content.map { SimpleNewsDto(it) }, newsList.number + 1, newsList.totalPages)
     }
 
 

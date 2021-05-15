@@ -4,12 +4,11 @@ import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundExce
 import com.ssu.capstone.alrimi.common.UnitTestBase
 import com.ssu.capstone.alrimi.common.factory.celebrity.CelebrityFactory
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito
 
-class CelebrityUnitTest() : UnitTestBase() {
+class CelebrityUnitTest : UnitTestBase() {
 
     @Test
     @DisplayName("연예인 목록 리턴")

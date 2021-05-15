@@ -9,8 +9,8 @@ object CompanyFactory {
         return Company(id, "MockCompany")
     }
 
-    fun returnOptionalMockCompany(): Optional<Company> {
-        return Optional.of(createMockCompany(1))
+    fun returnOptionalMockCompany(id: Long): Optional<Company> {
+        return Optional.of(createMockCompany(id))
     }
 
     fun returnMockCompanyList(): List<Company> {

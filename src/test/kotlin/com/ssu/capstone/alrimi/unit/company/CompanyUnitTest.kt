@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito
 import java.util.*
 
-class CompanyUnitTest() : UnitTestBase() {
+class CompanyUnitTest : UnitTestBase() {
 
     @Test
     @DisplayName("모든 Company 리스트 리턴")
@@ -28,7 +28,7 @@ class CompanyUnitTest() : UnitTestBase() {
     @DisplayName("특정 Company 리턴")
     fun getCompany() {
         BDDMockito.given(companyRepository.findById(1))
-            .willReturn(CompanyFactory.returnOptionalMockCompany())
+            .willReturn(CompanyFactory.returnOptionalMockCompany(1))
 
         var company: Any? = null
         Assertions.assertDoesNotThrow { company = companyService.getCompany(1) }
