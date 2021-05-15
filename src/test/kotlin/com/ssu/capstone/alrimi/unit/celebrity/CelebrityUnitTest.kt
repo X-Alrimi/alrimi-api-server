@@ -1,29 +1,22 @@
 package com.ssu.capstone.alrimi.unit.celebrity
 
+import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundException
 import com.ssu.capstone.alrimi.common.UnitTestBase
-import com.ssu.capstone.alrimi.common.factory.CompanyFactory
 import com.ssu.capstone.alrimi.common.factory.celebrity.CelebrityFactory
-import org.junit.jupiter.api.*
-import org.mockito.Mockito
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.mockito.BDDMockito
 
 class CelebrityUnitTest() : UnitTestBase() {
-
-
-    @BeforeEach
-    fun init() {
-        Mockito.`when`(celebrityRepository.findAllByCompany_IdAndParentIdIsNull(Mockito.anyLong()))
-            .thenReturn(
-                CelebrityFactory.makeMockCelebrityInfoTransfer(CelebrityFactory.findAllByCompany_IdAndParentIdIsNullMockingFunction())
-            )
-    }
 
     @Test
     @DisplayName("연예인 목록 리턴")
     fun getCelebritiesTest() {
-        Mockito.`when`(celebrityRepository.findAllByCompany_IdAndParentIdIsNull(Mockito.anyLong()))
-            .thenReturn(
-                CelebrityFactory.makeMockCelebrityInfoTransfer(CelebrityFactory.findAllByCompany_IdAndParentIdIsNullMockingFunction())
-            )
+        BDDMockito.given(celebrityRepository.findAllByCompany_IdAndParentIdIsNull(1)).willReturn(
+            CelebrityFactory.makeMockCelebrityInfoTransfer(CelebrityFactory.findAllByCompany_IdAndParentIdIsNullMockingFunction())
+        )
 
         val celebrities = celebrityService.getCelebritiesList(1)
 
@@ -37,5 +30,12 @@ class CelebrityUnitTest() : UnitTestBase() {
         Assertions.assertNotNull(celebrities[1])
         Assertions.assertNotNull(celebrities[1].member)
         Assertions.assertTrue(celebrities[1].member.size == 2)
+    }
+
+    @Test
+    @DisplayName("잘못된 회사 연예인 요청 시 에러 리턴")
+    fun failWhenInvalidCompanyRequest() {
+        BDDMockito.given(celebrityRepository.findAllByCompany_IdAndParentIdIsNull(2)).willReturn(listOf())
+        Assertions.assertThrows(CompanyNotFoundException::class.java) { celebrityService.getCelebritiesList(2) }
     }
 }
