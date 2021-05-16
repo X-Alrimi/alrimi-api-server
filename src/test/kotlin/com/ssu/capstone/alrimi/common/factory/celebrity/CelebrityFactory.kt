@@ -19,13 +19,13 @@ object CelebrityFactory {
     }
 
     fun findAllByCompany_IdAndParentIdIsNullMockingFunction(): List<Celebrity> {
-        val parent1 = createMockCelebrity(1, "parent1")
-        val child1 = createMockCelebrity(3, "child1")
-        val child2 = createMockCelebrity(4, "child2")
+        val parent1 = createMockCelebrity(1, "itzy")
+        val child1 = createMockCelebrity(3, "유나")
+        val child2 = createMockCelebrity(4, "류진")
 
-        val parent2 = createMockCelebrity(2, "parent2")
-        val child3 = createMockCelebrity(5, "child3")
-        val child4 = createMockCelebrity(6, "child4")
+        val parent2 = createMockCelebrity(2, "bts")
+        val child3 = createMockCelebrity(5, "v")
+        val child4 = createMockCelebrity(6, "슈가")
 
         parent1.member.addAll(listOf(child1, child2))
         parent2.member.addAll(listOf(child3, child4))

@@ -1,8 +1,10 @@
 package com.ssu.capstone.alrimi.core.util.common
 
+import java.text.SimpleDateFormat
 import java.util.*
 
 object DateUtil {
+    private val format = SimpleDateFormat("yyyy-MM-dd-HH:mm")
     private var calendar: Calendar = Calendar.getInstance()
 
     fun getWeekDaysBeforeDate(): Date {
@@ -16,13 +18,17 @@ object DateUtil {
      * 최근 알람이 하루 이내이면 알람 발생 x
      */
     fun canAlarm(date: Date?): Boolean {
-        if (date == null)
-            return true
+        return if (date == null)
+            true
         else {
             calendar.time = date
             calendar.set(Calendar.DATE, 1)
 
-            return calendar.before(Date())
+            calendar.before(Date())
         }
+    }
+
+    fun getStringFromDate(date: Date): String {
+        return format.format(date)
     }
 }

@@ -6,7 +6,7 @@ import java.util.*
 object CompanyFactory {
 
     fun createMockCompany(id: Long): Company {
-        return Company(id, "MockCompany")
+        return Company(id, "MockCompany${id}")
     }
 
     fun returnOptionalMockCompany(id: Long): Optional<Company> {

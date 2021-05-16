@@ -6,20 +6,18 @@ import com.ssu.capstone.alrimi.api.repository.device.DeviceRepository
 import com.ssu.capstone.alrimi.api.repository.news.NewsRepository
 import com.ssu.capstone.alrimi.api.service.celebrity.CelebrityServiceImpl
 import com.ssu.capstone.alrimi.api.service.company.CompanyServiceImpl
+import com.ssu.capstone.alrimi.api.service.crawler.CrawlerServiceImpl
 import com.ssu.capstone.alrimi.api.service.device.DeviceServiceImpl
 import com.ssu.capstone.alrimi.api.service.news.NewsServiceImpl
-import org.junit.Before
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
+import org.mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
 open class UnitTestBase {
 
-    @Before
+    @BeforeEach
     fun init() {
         MockitoAnnotations.initMocks(this)
     }
@@ -45,16 +43,19 @@ open class UnitTestBase {
     @Mock
     lateinit var deviceRepository: DeviceRepository
 
+    @Spy
     @InjectMocks
     lateinit var celebrityService: CelebrityServiceImpl
 
+    @Spy
     @InjectMocks
     lateinit var companyService: CompanyServiceImpl
 
+    @Spy
     @InjectMocks
     lateinit var deviceService: DeviceServiceImpl
 
+    @Spy
     @InjectMocks
     lateinit var newsService: NewsServiceImpl
-
 }
