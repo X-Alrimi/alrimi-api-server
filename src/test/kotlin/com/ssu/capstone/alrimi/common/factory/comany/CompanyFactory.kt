@@ -1,6 +1,8 @@
 package com.ssu.capstone.alrimi.common.factory.comany
 
 import com.ssu.capstone.alrimi.api.model.company.Company
+import com.ssu.capstone.alrimi.core.util.common.DateUtil
+
 import java.util.*
 
 object CompanyFactory {
@@ -15,5 +17,12 @@ object CompanyFactory {
 
     fun returnMockCompanyList(): List<Company> {
         return listOf(createMockCompany(1), createMockCompany(2))
+    }
+
+    fun returnOptionalMockCompany(id: Long, date: String): Optional<Company> {
+        var company = createMockCompany(id)
+        company.recentAlarm = DateUtil.getDateFromString(date)
+
+        return Optional.of(company)
     }
 }

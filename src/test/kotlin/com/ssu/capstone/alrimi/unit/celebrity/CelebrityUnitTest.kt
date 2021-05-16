@@ -8,8 +8,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito
 
-class CelebrityUnitTest : UnitTestBase() {
-
+class CelebrityUnitTest: UnitTestBase() {
     @Test
     @DisplayName("연예인 목록 리턴")
     fun getCelebritiesTest() {

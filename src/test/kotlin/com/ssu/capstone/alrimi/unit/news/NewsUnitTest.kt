@@ -9,16 +9,17 @@ import com.ssu.capstone.alrimi.common.factory.celebrity.CelebrityFactory
 import com.ssu.capstone.alrimi.common.factory.comany.CompanyFactory
 import com.ssu.capstone.alrimi.common.factory.news.NewsFactory
 import com.ssu.capstone.alrimi.core.execption.InvalidPageException
-import org.junit.Test
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito
 import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 class NewsUnitTest : UnitTestBase() {
-
     @Test
     @DisplayName("뉴스 저장 테스트")
     fun saveNewsTest() {

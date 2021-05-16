@@ -6,22 +6,14 @@ import com.ssu.capstone.alrimi.api.repository.device.DeviceRepository
 import com.ssu.capstone.alrimi.api.repository.news.NewsRepository
 import com.ssu.capstone.alrimi.api.service.celebrity.CelebrityServiceImpl
 import com.ssu.capstone.alrimi.api.service.company.CompanyServiceImpl
-import com.ssu.capstone.alrimi.api.service.crawler.CrawlerServiceImpl
 import com.ssu.capstone.alrimi.api.service.device.DeviceServiceImpl
 import com.ssu.capstone.alrimi.api.service.news.NewsServiceImpl
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
 open class UnitTestBase {
-
-    @BeforeEach
-    fun init() {
-        MockitoAnnotations.initMocks(this)
-    }
-
     /**
      * Kotlin에서 Mockito.any() 함수 호출시 null을 리턴
      * Kotlin은 final Class이기 떄문에 NPE를 리턴한다.

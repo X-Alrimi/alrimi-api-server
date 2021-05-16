@@ -24,8 +24,7 @@ class CrawlerUnitTest : UnitTestBase() {
     private lateinit var crawlerService: CrawlerServiceImpl
 
     @BeforeEach
-    fun setNgram() {
-        MockitoAnnotations.initMocks(this)
+    fun init() {
         val sb = StringBuilder()
 
         NewsFactory.getKeywords().forEach { sb.append(it).append("\n") }

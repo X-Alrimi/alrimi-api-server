@@ -5,13 +5,14 @@ import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundExce
 import com.ssu.capstone.alrimi.common.UnitTestBase
 import com.ssu.capstone.alrimi.common.factory.comany.CompanyFactory
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito
+import org.mockito.MockitoAnnotations
 import java.util.*
 
 class CompanyUnitTest : UnitTestBase() {
-
     @Test
     @DisplayName("모든 Company 리스트 리턴")
     fun getAllCompanyList() {

@@ -22,13 +22,16 @@ object DateUtil {
             true
         else {
             calendar.time = date
-            calendar.set(Calendar.DATE, 1)
-
-            calendar.before(Date())
+            calendar.add(Calendar.DATE, 1)
+            return calendar.time.before(Date())
         }
     }
 
     fun getStringFromDate(date: Date): String {
         return format.format(date)
+    }
+
+    fun getDateFromString(date: String): Date {
+        return format.parse(date)
     }
 }

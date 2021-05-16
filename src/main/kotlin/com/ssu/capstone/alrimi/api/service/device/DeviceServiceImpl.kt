@@ -28,12 +28,22 @@ class DeviceServiceImpl(
     private val companyRepository: CompanyRepository
 
 ) : DeviceService {
+
+    /**
+     * device 토큰 저장
+     */
     override fun saveToken(dto: TokenDto): Device {
         return deviceRepository.save(Device(dto.token))
     }
 
+
+    /**
+     * device 토큰 삭제
+     */
     override fun deleteToken(dto: TokenDto): Boolean {
-        return deviceRepository.deleteByToken(dto.token)
+        val token = deviceRepository.findById(dto.token).orElseThrow { TokenNotExistException() }
+        deviceRepository.delete(token)
+        return true
     }
 
     override fun sendAlarm(event: AlarmEvent) {
@@ -49,6 +59,9 @@ class DeviceServiceImpl(
         }
     }
 
+    /**
+     * device별 키워드 저장
+     */
     override fun addKeyword(keywordDto: KeywordDto): Boolean {
         val company = companyRepository.findByName(keywordDto.keyword)
             .orElseThrow { CompanyNotFoundException() }
@@ -57,20 +70,25 @@ class DeviceServiceImpl(
 
     }
 
+    /**
+     * device별 키워드 삭제
+     */
     override fun deleteKeyword(keywordDto: KeywordDto): Boolean {
-        val company = companyRepository.findByName(keywordDto.keyword)
-            .orElseThrow { CompanyNotFoundException() }
+        val company = companyRepository.findByName(keywordDto.keyword).orElseThrow { CompanyNotFoundException() }
         val device = deviceRepository.findById(keywordDto.token).orElseThrow { TokenNotExistException() }
         return company.devices.remove(device)
     }
 
+    /**
+     * 최근 알람이 하루 이전이면 알람 발송(x)
+     */
     override fun canAlarm(companyName: String): Boolean {
         val company: Company = companyRepository.findByName(companyName).orElseThrow { CompanyNotFoundException() }
 
-        return if(DateUtil.canAlarm(company.recentAlarm)) {
+        return if (DateUtil.canAlarm(company.recentAlarm)) {
             company.recentAlarm = Date()
             true
-        }else
+        } else
             false
     }
 }
