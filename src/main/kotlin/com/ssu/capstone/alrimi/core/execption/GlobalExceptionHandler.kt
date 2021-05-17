@@ -33,4 +33,10 @@ class GlobalExceptionHandler {
     fun methodArgumentNotValidExceptionHandler(e: Exception): ErrorResponse {
         return ErrorResponse(e, ExceptionCode.SYSTEM_001)
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidPageException::class)
+    fun invalidPageRequestHandler(e: ApiException): ErrorResponse {
+        return ErrorResponse(e, ExceptionCode.SYSTEM_002)
+    }
 }
