@@ -66,8 +66,10 @@ class DeviceServiceImpl(
         val company = companyRepository.findByName(keywordDto.keyword)
             .orElseThrow { CompanyNotFoundException() }
         val device = deviceRepository.findById(keywordDto.token).orElseThrow { TokenNotExistException() }
-        return company.devices.add(device)
 
+        if (!company.devices.contains(device))
+            company.devices.add(device)
+        return true
     }
 
     /**

@@ -74,6 +74,7 @@ class CompanyIntegrationTest : IntegrationTestBase() {
             .andExpect {
                 status { isBadRequest }
                 jsonPath("error") { isNotEmpty }
+                jsonPath("error.code"){value("COMPANY_001")}
             }
     }
 

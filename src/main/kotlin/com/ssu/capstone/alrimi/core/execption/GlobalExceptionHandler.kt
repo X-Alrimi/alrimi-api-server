@@ -2,6 +2,7 @@ package com.ssu.capstone.alrimi.core.execption
 
 import com.ssu.capstone.alrimi.api.service.celebrity.exception.CelebrityNotFoundException
 import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundException
+import com.ssu.capstone.alrimi.api.service.device.exception.TokenNotExistException
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -38,5 +39,11 @@ class GlobalExceptionHandler {
     @ExceptionHandler(InvalidPageException::class)
     fun invalidPageRequestHandler(e: ApiException): ErrorResponse {
         return ErrorResponse(e, ExceptionCode.SYSTEM_002)
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(TokenNotExistException::class)
+    fun tokenNotExistExceptionHandler(e: Exception): ErrorResponse {
+        return ErrorResponse(e, ExceptionCode.DEVICE_001)
     }
 }
