@@ -4,18 +4,16 @@ import com.ssu.capstone.alrimi.api.controller.dtos.company.SimpleCompanyDto
 import com.ssu.capstone.alrimi.api.model.company.Company
 import com.ssu.capstone.alrimi.api.model.news.News
 import com.ssu.capstone.alrimi.api.repository.celebrity.projection.CelebrityInfoTransfer
-import com.ssu.capstone.alrimi.common.UnitTestBase
+import com.ssu.capstone.alrimi.unit.UnitTestBase
 import com.ssu.capstone.alrimi.common.factory.celebrity.CelebrityFactory
 import com.ssu.capstone.alrimi.common.factory.comany.CompanyFactory
 import com.ssu.capstone.alrimi.common.factory.news.NewsFactory
 import com.ssu.capstone.alrimi.core.execption.InvalidPageException
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

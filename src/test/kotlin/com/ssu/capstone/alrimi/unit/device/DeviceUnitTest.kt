@@ -1,6 +1,6 @@
 package com.ssu.capstone.alrimi.unit.device
 
-import com.ssu.capstone.alrimi.common.UnitTestBase
+import com.ssu.capstone.alrimi.unit.UnitTestBase
 import com.ssu.capstone.alrimi.common.factory.comany.CompanyFactory
 import com.ssu.capstone.alrimi.core.util.common.DateUtil
 import org.junit.jupiter.api.Assertions

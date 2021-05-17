@@ -1,7 +1,7 @@
 package com.ssu.capstone.alrimi.unit.celebrity
 
 import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundException
-import com.ssu.capstone.alrimi.common.UnitTestBase
+import com.ssu.capstone.alrimi.unit.UnitTestBase
 import com.ssu.capstone.alrimi.common.factory.celebrity.CelebrityFactory
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName

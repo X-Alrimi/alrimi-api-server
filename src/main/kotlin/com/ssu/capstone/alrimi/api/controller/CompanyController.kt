@@ -4,11 +4,9 @@ import com.ssu.capstone.alrimi.api.controller.dtos.company.DetailCompanyDto
 import com.ssu.capstone.alrimi.api.controller.dtos.company.SimpleCompanyDto
 import com.ssu.capstone.alrimi.api.service.celebrity.CelebrityService
 import com.ssu.capstone.alrimi.api.service.company.CompanyService
-import com.ssu.capstone.alrimi.api.service.news.NewsService
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
 
 
 @RestController

@@ -1,4 +1,4 @@
-package com.ssu.capstone.alrimi.common
+package com.ssu.capstone.alrimi.unit
 
 import com.ssu.capstone.alrimi.api.repository.celebrity.CelebrityRepository
 import com.ssu.capstone.alrimi.api.repository.company.CompanyRepository

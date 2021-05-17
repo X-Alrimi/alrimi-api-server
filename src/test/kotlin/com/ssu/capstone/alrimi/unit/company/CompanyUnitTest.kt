@@ -2,14 +2,12 @@ package com.ssu.capstone.alrimi.unit.company
 
 import com.ssu.capstone.alrimi.api.controller.dtos.company.SimpleCompanyDto
 import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundException
-import com.ssu.capstone.alrimi.common.UnitTestBase
+import com.ssu.capstone.alrimi.unit.UnitTestBase
 import com.ssu.capstone.alrimi.common.factory.comany.CompanyFactory
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito
-import org.mockito.MockitoAnnotations
 import java.util.*
 
 class CompanyUnitTest : UnitTestBase() {

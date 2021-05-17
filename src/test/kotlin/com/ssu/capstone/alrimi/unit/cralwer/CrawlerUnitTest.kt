@@ -4,7 +4,7 @@ import com.ssu.capstone.alrimi.api.controller.dtos.company.SimpleCompanyDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.AlarmNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.DetailNewsDto
 import com.ssu.capstone.alrimi.api.service.crawler.CrawlerServiceImpl
-import com.ssu.capstone.alrimi.common.UnitTestBase
+import com.ssu.capstone.alrimi.unit.UnitTestBase
 import com.ssu.capstone.alrimi.common.factory.celebrity.CelebrityFactory
 import com.ssu.capstone.alrimi.common.factory.comany.CompanyFactory
 import com.ssu.capstone.alrimi.common.factory.news.NewsFactory
@@ -16,7 +16,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 import java.io.StringReader
 
 class CrawlerUnitTest : UnitTestBase() {
