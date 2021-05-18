@@ -48,7 +48,7 @@ class CrawlerUnitTest : UnitTestBase() {
             any(DetailNewsDto::class.java)
         )
 
-        val crawlerNews = NewsFactory.getNewsCrawl0erDto()
+        val crawlerNews = NewsFactory.getNewsCrawlerDto()
         var result: List<AlarmNewsDto>? = null
 
         Assertions.assertDoesNotThrow { result = crawlerService.findKeyword(crawlerNews) }

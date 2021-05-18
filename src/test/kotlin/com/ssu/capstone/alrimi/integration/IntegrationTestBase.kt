@@ -4,6 +4,7 @@ import com.ssu.capstone.alrimi.api.repository.celebrity.CelebrityRepository
 import com.ssu.capstone.alrimi.api.repository.company.CompanyRepository
 import com.ssu.capstone.alrimi.api.repository.device.DeviceRepository
 import com.ssu.capstone.alrimi.api.repository.news.NewsRepository
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -14,6 +15,11 @@ import org.springframework.transaction.annotation.Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 class IntegrationTestBase {
+
+    fun <T> any(type: Class<T>): T {
+        Mockito.any<T>()
+        return null as T
+    }
 
     @Autowired
     protected lateinit var mockMvc: MockMvc

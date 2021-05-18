@@ -19,7 +19,7 @@ object NewsFactory {
         return DetailNewsDto(title, "https://mocknews.com", text, DateUtil.getStringFromDate(Date()))
     }
 
-    fun getNewsCrawl0erDto(): NewsCrawlerDto {
+    fun getNewsCrawlerDto(): NewsCrawlerDto {
         val news = listOf(
             getNewsDto(
                 "keyword1 Include News",
