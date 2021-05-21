@@ -1,7 +1,7 @@
 package com.ssu.capstone.alrimi.api.service.crawler
 
 import com.ssu.capstone.alrimi.api.controller.dtos.news.AlarmNewsDto
-import com.ssu.capstone.alrimi.api.controller.dtos.news.DetailNewsDto
+import com.ssu.capstone.alrimi.api.controller.dtos.news.CriticalNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.NewsCrawlerDto
 import com.ssu.capstone.alrimi.api.repository.celebrity.projection.CelebrityInfoTransfer
 import com.ssu.capstone.alrimi.api.service.celebrity.CelebrityService
@@ -18,7 +18,7 @@ class CrawlerServiceImpl(
     private val celebrityService: CelebrityService,
     private val newsService: NewsService
 ) : CrawlerService {
-    override fun findKeyword(crawledData: NewsCrawlerDto): MutableList<AlarmNewsDto> {
+    override fun findKeyword(crawledData: NewsCrawlerDto): List<AlarmNewsDto> {
         val result: MutableList<AlarmNewsDto> = mutableListOf()
         val companies = companyService.getSimpleCompanyList()
 
@@ -37,7 +37,7 @@ class CrawlerServiceImpl(
                     }
                 }
                 if (flag) {
-                    result.add(AlarmNewsDto(company.name,news))
+                    result.add(AlarmNewsDto(company.name, news))
                     newsService.save(company, celebritySet, news)
                 }
             }
@@ -45,7 +45,7 @@ class CrawlerServiceImpl(
         return result
     }
 
-    override fun findCritical(news: AlarmNewsDto): Boolean {
-        return true
+    override fun findCritical(news: List<AlarmNewsDto>): List<CriticalNewsDto> {
+        return news.map { CriticalNewsDto(it,true, listOf()) }
     }
 }

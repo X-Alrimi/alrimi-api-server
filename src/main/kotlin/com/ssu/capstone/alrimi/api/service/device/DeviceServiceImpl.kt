@@ -5,9 +5,9 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingException
 import com.google.firebase.messaging.MulticastMessage
 import com.google.firebase.messaging.Notification
+import com.ssu.capstone.alrimi.api.controller.dtos.news.CriticalNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.token.KeywordDto
 import com.ssu.capstone.alrimi.api.controller.dtos.token.TokenDto
-import com.ssu.capstone.alrimi.api.model.company.Company
 import com.ssu.capstone.alrimi.api.model.device.Device
 import com.ssu.capstone.alrimi.api.repository.company.CompanyRepository
 import com.ssu.capstone.alrimi.api.repository.device.DeviceRepository
@@ -15,19 +15,23 @@ import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundExce
 import com.ssu.capstone.alrimi.api.service.device.exception.TokenNotExistException
 import com.ssu.capstone.alrimi.core.event.AlarmEvent
 import com.ssu.capstone.alrimi.core.util.common.AlarmUtil
-import com.ssu.capstone.alrimi.core.util.common.DateUtil
+import com.ssu.capstone.alrimi.core.util.common.SimilarityUtil
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 @Service
 @Transactional
 class DeviceServiceImpl(
     private val deviceRepository: DeviceRepository,
-    private val companyRepository: CompanyRepository
+    private val companyRepository: CompanyRepository,
+    private val redisTemplate: RedisTemplate<String, Double>
 
 ) : DeviceService {
+
+    private final val ALARM_SIMILARITY_LEVEL = 50.00
 
     /**
      * device 토큰 저장
@@ -84,13 +88,26 @@ class DeviceServiceImpl(
     /**
      * 최근 알람이 하루 이전이면 알람 발송(x)
      */
-    override fun canAlarm(companyName: String): Boolean {
-        val company: Company = companyRepository.findByName(companyName).orElseThrow { CompanyNotFoundException() }
+    override fun canAlarm(dto: CriticalNewsDto): Boolean {
+        var flag: Boolean = false
 
-        return if (DateUtil.canAlarm(company.recentAlarm)) {
-            company.recentAlarm = Date()
-            true
+        if (redisTemplate.hasKey(dto.news.company)) {
+            val recentAlarmSimilarity: List<Double> =
+                redisTemplate.opsForList().range(dto.news.company, 0, -1) as List<Double>
+            val similarityResult = SimilarityUtil.calculateSimilarity(recentAlarmSimilarity, dto.similarity)
+
+            if (similarityResult >= ALARM_SIMILARITY_LEVEL) {
+                redisTemplate.delete(dto.news.company)
+                flag = true
+            }
         } else
-            false
+            flag = true
+
+
+        if (flag) {
+            redisTemplate.opsForList().rightPushAll(dto.news.company, dto.similarity)
+            redisTemplate.expire(dto.news.company, 3, TimeUnit.DAYS)
+        }
+        return flag
     }
 }

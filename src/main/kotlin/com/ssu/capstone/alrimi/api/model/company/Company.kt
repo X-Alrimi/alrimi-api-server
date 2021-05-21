@@ -1,7 +1,6 @@
 package com.ssu.capstone.alrimi.api.model.company
 
 import com.ssu.capstone.alrimi.api.model.device.Device
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -15,6 +14,4 @@ data class Company(
 ) {
     @ManyToMany
     val devices: MutableList<Device> = mutableListOf()
-
-    var recentAlarm: Date? = null
 }

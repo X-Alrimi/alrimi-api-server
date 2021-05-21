@@ -1,5 +1,6 @@
 package com.ssu.capstone.alrimi.api.service.device
 
+import com.ssu.capstone.alrimi.api.controller.dtos.news.CriticalNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.token.KeywordDto
 import com.ssu.capstone.alrimi.api.controller.dtos.token.TokenDto
 import com.ssu.capstone.alrimi.api.model.device.Device
@@ -11,5 +12,5 @@ interface DeviceService {
     fun sendAlarm(event: AlarmEvent)
     fun addKeyword(keywordDto: KeywordDto): Boolean
     fun deleteKeyword(keywordDto: KeywordDto): Boolean
-    fun canAlarm(companyName: String): Boolean
+    fun canAlarm(news: CriticalNewsDto): Boolean
 }

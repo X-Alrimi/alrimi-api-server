@@ -1,6 +1,6 @@
 package com.ssu.capstone.alrimi.api.controller
 
-import com.ssu.capstone.alrimi.api.controller.dtos.news.AlarmNewsDto
+import com.ssu.capstone.alrimi.api.controller.dtos.news.CriticalNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.NewsCrawlerDto
 import com.ssu.capstone.alrimi.api.service.crawler.CrawlerService
 import com.ssu.capstone.alrimi.api.service.device.DeviceService
@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiOperation
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import java.util.stream.Collectors
 import javax.validation.Valid
 
 @RestController
@@ -23,20 +22,18 @@ class CrawlerController(
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("크롤링한 뉴스 데이터 전달 받는 API")
-    fun getCrawledNews(@RequestBody @Valid crawledData: NewsCrawlerDto): MutableList<AlarmNewsDto> {
+    fun getCrawledNews(@RequestBody @Valid crawledData: NewsCrawlerDto) {
         val keywordList = crawlerService.findKeyword(crawledData)
-        val keywordAndCriticalList =
-            keywordList.stream().filter { news -> crawlerService.findCritical(news) }.collect(Collectors.toList())
+        val criticalList: List<CriticalNewsDto> = crawlerService.findCritical(keywordList)
 
-        keywordAndCriticalList.filter { deviceService.canAlarm(it.company) }.forEach { news ->
+        criticalList.filter { deviceService.canAlarm(it) }.forEach { alarmNews ->
             eventPublisher.publishEvent(
                 AlarmEvent(
-                    news.company,
-                    news.news.title,
-                    news.news.link
+                    alarmNews.news.company,
+                    alarmNews.news.title,
+                    alarmNews.news.link
                 )
             )
         }
-        return keywordAndCriticalList
     }
 }
