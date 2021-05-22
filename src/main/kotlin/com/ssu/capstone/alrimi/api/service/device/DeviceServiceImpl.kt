@@ -100,7 +100,6 @@ class DeviceServiceImpl(
         } else
             flag = true
 
-
         if (flag) {
             redisTemplate.opsForList().rightPushAll(dto.news.company, dto.similarity)
             redisTemplate.expire(dto.news.company, 3, TimeUnit.DAYS)

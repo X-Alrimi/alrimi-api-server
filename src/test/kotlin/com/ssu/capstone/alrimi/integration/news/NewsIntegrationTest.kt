@@ -32,7 +32,7 @@ class NewsIntegrationTest : IntegrationTestBase() {
         Assertions.assertDoesNotThrow {
             company = companyRepository.findById(testCompanyId).orElseThrow { CompanyNotFoundException() }
         }
-        newsRepository.save(News(null, "testNews", "https://testnews.com", "2021-05-17-17:50", company!!, listOf()))
+        newsRepository.save(News(null, "testNews", "https://testnews.com", "2021-05-17-17:50",false,company!!, listOf()))
     }
 
     @Test

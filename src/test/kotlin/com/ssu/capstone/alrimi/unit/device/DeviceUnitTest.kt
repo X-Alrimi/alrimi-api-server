@@ -45,7 +45,9 @@ class DeviceUnitTest : UnitTestBase() {
 
         var result: Boolean? = null
 
-        deviceService.canAlarm(NewsFactory.getCriticalNewsDto())
+        Assertions.assertDoesNotThrow { result = deviceService.canAlarm(NewsFactory.getCriticalNewsDto()) }
+        Assertions.assertNotNull(result)
+        Assertions.assertEquals(true, result)
 
     }
 }
