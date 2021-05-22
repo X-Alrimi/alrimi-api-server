@@ -20,7 +20,7 @@ data class News(
         val createdAt: String,
 
         @Column(nullable = false)
-        var isCritical: Boolean,
+        var critical: Boolean,
 
         @ManyToOne
         @JoinColumn(name = "company_id", nullable = false)

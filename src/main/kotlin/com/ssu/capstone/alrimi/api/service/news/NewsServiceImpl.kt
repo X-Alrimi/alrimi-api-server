@@ -43,7 +43,7 @@ class NewsServiceImpl(
                         link = news.link,
                         createdAt = news.createdAt,
                         company = company,
-                        isCritical = false,
+                        critical = false,
                         celebrities = celebrityList
                 )
         )
@@ -59,10 +59,18 @@ class NewsServiceImpl(
         return PagingNewsDto(newsList.content.map { SimpleNewsDto(it) }, newsList.number + 1, newsList.totalPages)
     }
 
+    override fun getCriticalNewsFromCompany(companyId: Long, page: Int): PagingNewsDto {
+        if (page < 1)
+            throw InvalidPageException()
+        val company: Company = companyRepository.findById(companyId).orElseThrow { CompanyNotFoundException() }
+        val newsList = newsRepository.findAllByCompanyAndCriticalIsTrue(company, PageUtil(page - 1))
+        return PagingNewsDto(newsList.content.map { SimpleNewsDto(it) }, newsList.number + 1, newsList.totalPages)
+    }
+
     override fun changeNewsCritical(dto: List<CriticalNewsDto>): Boolean {
         dto.forEach {
             val news = newsRepository.findByLink(it.news.link).orElseThrow { NewsNotExistException() }
-            news.isCritical = true
+            news.critical = true
         }
         return true
     }

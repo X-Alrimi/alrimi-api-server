@@ -9,5 +9,6 @@ import com.ssu.capstone.alrimi.api.repository.celebrity.projection.CelebrityInfo
 interface NewsService {
     fun save(companyDto: SimpleCompanyDto, celebritySet: Set<CelebrityInfoTransfer>, news: DetailNewsDto)
     fun getNewsFromCompany(companyId: Long, page: Int): PagingNewsDto
+    fun getCriticalNewsFromCompany(companyId: Long, page: Int): PagingNewsDto
     fun changeNewsCritical(dto: List<CriticalNewsDto>): Boolean
 }
