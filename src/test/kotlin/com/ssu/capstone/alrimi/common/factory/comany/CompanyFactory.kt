@@ -19,10 +19,4 @@ object CompanyFactory {
         return listOf(createMockCompany(1), createMockCompany(2))
     }
 
-    fun returnOptionalMockCompany(id: Long, date: String): Optional<Company> {
-        var company = createMockCompany(id)
-        company.recentAlarm = DateUtil.getDateFromString(date)
-
-        return Optional.of(company)
-    }
 }

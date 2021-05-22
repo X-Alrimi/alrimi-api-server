@@ -25,14 +25,11 @@ import java.util.concurrent.TimeUnit
 @Service
 @Transactional
 class DeviceServiceImpl(
-    private val deviceRepository: DeviceRepository,
-    private val companyRepository: CompanyRepository,
-    private val redisTemplate: RedisTemplate<String, Double>
+        private val deviceRepository: DeviceRepository,
+        private val companyRepository: CompanyRepository,
+        private val redisTemplate: RedisTemplate<String, Double>
 
 ) : DeviceService {
-
-    private final val ALARM_SIMILARITY_LEVEL = 50.00
-
     /**
      * device 토큰 저장
      */
@@ -54,9 +51,9 @@ class DeviceServiceImpl(
         val company = companyRepository.findByName(event.company).orElseThrow { CompanyNotFoundException() }
         try {
             val multicast = MulticastMessage.builder().addAllTokens(company.devices.map { device -> device.token })
-                .setNotification(Notification(AlarmUtil.getMessageTitle(event.company), event.title))
-                .putData("link", event.link)
-                .build()
+                    .setNotification(Notification(AlarmUtil.getMessageTitle(event.company), event.title))
+                    .putData("link", event.link)
+                    .build()
             FirebaseMessaging.getInstance(FirebaseApp.getInstance("X-Alrimi")).sendMulticast(multicast).successCount
         } catch (e: FirebaseMessagingException) {
             e.printStackTrace()
@@ -68,7 +65,7 @@ class DeviceServiceImpl(
      */
     override fun addKeyword(keywordDto: KeywordDto): Boolean {
         val company = companyRepository.findByName(keywordDto.keyword)
-            .orElseThrow { CompanyNotFoundException() }
+                .orElseThrow { CompanyNotFoundException() }
         val device = deviceRepository.findById(keywordDto.token).orElseThrow { TokenNotExistException() }
 
         if (!company.devices.contains(device))
@@ -93,10 +90,10 @@ class DeviceServiceImpl(
 
         if (redisTemplate.hasKey(dto.news.company)) {
             val recentAlarmSimilarity: List<Double> =
-                redisTemplate.opsForList().range(dto.news.company, 0, -1) as List<Double>
+                    redisTemplate.opsForList().range(dto.news.company, 0, -1) as List<Double>
             val similarityResult = SimilarityUtil.calculateSimilarity(recentAlarmSimilarity, dto.similarity)
 
-            if (similarityResult >= ALARM_SIMILARITY_LEVEL) {
+            if (similarityResult <= SimilarityUtil.ALARM_SIMILARITY_LEVEL) {
                 redisTemplate.delete(dto.news.company)
                 flag = true
             }

@@ -35,17 +35,17 @@ class CrawlerUnitTest : UnitTestBase() {
     @DisplayName("Ngram 정상 작동 확인")
     fun findKeywordTest() {
         Mockito.doReturn(listOf(SimpleCompanyDto(CompanyFactory.returnMockCompanyList()[0])))
-            .`when`(companyService).getSimpleCompanyList()
+                .`when`(companyService).getSimpleCompanyList()
 
         Mockito.doReturn(
-            CelebrityFactory.makeMockCelebrityInfoTransfer(
-                CelebrityFactory.findAllByCompany_IdAndParentIdIsNullMockingFunction()
-            )
+                CelebrityFactory.makeMockCelebrityInfoTransfer(
+                        CelebrityFactory.findAllByCompany_IdAndParentIdIsNullMockingFunction()
+                )
         ).`when`(celebrityService).getCelebritiesList(1)
         Mockito.doNothing().`when`(newsService).save(
-            any(SimpleCompanyDto::class.java),
-            BDDMockito.anySet(),
-            any(DetailNewsDto::class.java)
+                any(SimpleCompanyDto::class.java),
+                BDDMockito.anySet(),
+                any(DetailNewsDto::class.java)
         )
 
         val crawlerNews = NewsFactory.getNewsCrawlerDto()

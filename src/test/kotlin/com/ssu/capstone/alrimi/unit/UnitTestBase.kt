@@ -9,8 +9,14 @@ import com.ssu.capstone.alrimi.api.service.company.CompanyServiceImpl
 import com.ssu.capstone.alrimi.api.service.device.DeviceServiceImpl
 import com.ssu.capstone.alrimi.api.service.news.NewsServiceImpl
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.*
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Spy
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.data.redis.core.ListOperations
+import org.springframework.data.redis.core.RedisTemplate
+
 
 @ExtendWith(MockitoExtension::class)
 open class UnitTestBase {
@@ -22,6 +28,16 @@ open class UnitTestBase {
         Mockito.any<T>()
         return null as T
     }
+
+    fun <T> anyCollection(type: Class<T>): Collection<T> {
+        return Mockito.anyCollection() ?: listOf()
+    }
+
+    @Mock
+    lateinit var listOperations: ListOperations<String, Double>
+
+    @Mock
+    lateinit var redisTemplate: RedisTemplate<String, Double>
 
     @Mock
     lateinit var newsRepository: NewsRepository

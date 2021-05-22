@@ -7,6 +7,7 @@ import com.ssu.capstone.alrimi.api.service.device.DeviceService
 import com.ssu.capstone.alrimi.common.factory.news.NewsFactory
 import com.ssu.capstone.alrimi.core.event.AlarmEvent
 import com.ssu.capstone.alrimi.integration.IntegrationTestBase
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
@@ -33,11 +34,13 @@ class CrawlerIntegrationTest : IntegrationTestBase() {
 
 
     @Test
+    @Disabled
     @DisplayName("정상적인 크롤링을통한 로직")
     fun getCrawledNewsTest() {
+        /*
         Mockito.doReturn(true)
             .`when`(crawlerService).findCritical(any(AlarmNewsDto::class.java))
-
+        */
         Mockito.doNothing()
             .`when`(deviceService).sendAlarm(any(AlarmEvent::class.java))
 
