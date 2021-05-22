@@ -4,9 +4,11 @@ import com.ssu.capstone.alrimi.api.controller.dtos.news.AlarmNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.CriticalNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.NewsCrawlerDto
 import com.ssu.capstone.alrimi.api.repository.celebrity.projection.CelebrityInfoTransfer
+import com.ssu.capstone.alrimi.api.repository.news.NewsRepository
 import com.ssu.capstone.alrimi.api.service.celebrity.CelebrityService
 import com.ssu.capstone.alrimi.api.service.company.CompanyService
 import com.ssu.capstone.alrimi.api.service.news.NewsService
+import com.ssu.capstone.alrimi.api.service.news.exception.NewsNotExistException
 import com.ssu.capstone.alrimi.core.util.ngram.CustomNgramAnalyzer
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class CrawlerServiceImpl(
-    private val companyService: CompanyService,
-    private val celebrityService: CelebrityService,
-    private val newsService: NewsService
+        private val companyService: CompanyService,
+        private val celebrityService: CelebrityService,
+        private val newsService: NewsService,
 ) : CrawlerService {
     override fun findKeyword(crawledData: NewsCrawlerDto): List<AlarmNewsDto> {
         val result: MutableList<AlarmNewsDto> = mutableListOf()
@@ -46,6 +48,8 @@ class CrawlerServiceImpl(
     }
 
     override fun findCritical(news: List<AlarmNewsDto>): List<CriticalNewsDto> {
-        return news.map { CriticalNewsDto(it,true, listOf()) }
+        return news.map {
+            CriticalNewsDto(it, true, listOf())
+        }
     }
 }

@@ -4,6 +4,7 @@ import com.ssu.capstone.alrimi.api.controller.dtos.news.CriticalNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.news.NewsCrawlerDto
 import com.ssu.capstone.alrimi.api.service.crawler.CrawlerService
 import com.ssu.capstone.alrimi.api.service.device.DeviceService
+import com.ssu.capstone.alrimi.api.service.news.NewsService
 import com.ssu.capstone.alrimi.core.event.AlarmEvent
 import io.swagger.annotations.ApiOperation
 import org.springframework.context.ApplicationEventPublisher
@@ -14,9 +15,10 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/crawler")
 class CrawlerController(
-    private val crawlerService: CrawlerService,
-    private val deviceService: DeviceService,
-    private val eventPublisher: ApplicationEventPublisher
+        private val crawlerService: CrawlerService,
+        private val deviceService: DeviceService,
+        private val newsService: NewsService,
+        private val eventPublisher: ApplicationEventPublisher
 ) {
 
     @PostMapping
@@ -25,14 +27,14 @@ class CrawlerController(
     fun getCrawledNews(@RequestBody @Valid crawledData: NewsCrawlerDto) {
         val keywordList = crawlerService.findKeyword(crawledData)
         val criticalList: List<CriticalNewsDto> = crawlerService.findCritical(keywordList)
-
+        newsService.changeNewsCritical(criticalList)
         criticalList.filter { deviceService.canAlarm(it) }.forEach { alarmNews ->
             eventPublisher.publishEvent(
-                AlarmEvent(
-                    alarmNews.news.company,
-                    alarmNews.news.title,
-                    alarmNews.news.link
-                )
+                    AlarmEvent(
+                            alarmNews.news.company,
+                            alarmNews.news.title,
+                            alarmNews.news.link
+                    )
             )
         }
     }

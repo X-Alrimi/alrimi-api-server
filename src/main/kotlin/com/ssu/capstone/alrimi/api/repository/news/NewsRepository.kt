@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 interface NewsRepository : JpaRepository<News, Long> {
     fun findAllByCompany(company: Company, pageable: Pageable): Page<News>
+    fun findByLink(link: String): Optional<News>
 }
