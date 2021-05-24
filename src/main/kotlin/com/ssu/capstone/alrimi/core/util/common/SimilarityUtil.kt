@@ -16,9 +16,7 @@ object SimilarityUtil {
         }
         C = sqrt(C)
         D = sqrt(D)
-        E = sqrt(E)
 
-        print(E/(C*D))
         return E / (C * D)
     }
 }
