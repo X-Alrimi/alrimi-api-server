@@ -7,7 +7,7 @@ import org.apache.lucene.analysis.ngram.NGramTokenizer
 
 class NgramAnalyzerUtil : Analyzer() {
     override fun createComponents(fieldName: String?): TokenStreamComponents {
-        val tokenizer = NGramTokenizer(2, 3) //min 2 && max 3
+        val tokenizer = NGramTokenizer(1, 3) //min 2 && max 3
         val nGramTokenFilter = NGramTokenFilter(tokenizer, 2)
         return Analyzer.TokenStreamComponents(tokenizer, nGramTokenFilter)
     }

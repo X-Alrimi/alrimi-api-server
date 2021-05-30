@@ -87,7 +87,6 @@ class DeviceServiceImpl(
      */
     override fun canAlarm(dto: CriticalNewsDto): Boolean {
         var flag: Boolean = false
-
         if (redisTemplate.hasKey(dto.news.company)) {
             val recentAlarmSimilarity: List<Double> =
                     redisTemplate.opsForList().range(dto.news.company, 0, -1) as List<Double>

@@ -18,7 +18,7 @@ class NewsController(private val newsService: NewsService) {
         return newsService.getNewsFromCompany(companyId, page)
     }
 
-    @GetMapping
+    @GetMapping("/critial")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("연관된 회사 관련 크리티컬 뉴스 가져오기")
     fun getCriticalNews(@RequestParam companyId: Long, @RequestParam page: Int): PagingNewsDto {

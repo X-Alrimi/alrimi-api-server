@@ -15,27 +15,28 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/crawler")
 class CrawlerController(
-        private val crawlerService: CrawlerService,
-        private val deviceService: DeviceService,
-        private val newsService: NewsService,
-        private val eventPublisher: ApplicationEventPublisher
+    private val crawlerService: CrawlerService,
+    private val deviceService: DeviceService,
+    private val newsService: NewsService,
+    private val eventPublisher: ApplicationEventPublisher
 ) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("크롤링한 뉴스 데이터 전달 받는 API")
-    fun getCrawledNews(@RequestBody @Valid crawledData: NewsCrawlerDto) {
+    fun getCrawledNews(@RequestBody @Valid crawledData: NewsCrawlerDto): List<CriticalNewsDto> {
         val keywordList = crawlerService.findKeyword(crawledData)
         val criticalList: List<CriticalNewsDto> = crawlerService.findCritical(keywordList)
         newsService.changeNewsCritical(criticalList)
         criticalList.filter { deviceService.canAlarm(it) }.forEach { alarmNews ->
             eventPublisher.publishEvent(
-                    AlarmEvent(
-                            alarmNews.news.company,
-                            alarmNews.news.title,
-                            alarmNews.news.link
-                    )
+                AlarmEvent(
+                    alarmNews.news.company,
+                    alarmNews.news.title,
+                    alarmNews.news.link
+                )
             )
         }
+        return criticalList;
     }
 }
