@@ -23,29 +23,29 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class NewsServiceImpl(
-        private val newsRepository: NewsRepository,
-        private val companyRepository: CompanyRepository,
-        private val celebrityRepository: CelebrityRepository
+    private val newsRepository: NewsRepository,
+    private val companyRepository: CompanyRepository,
+    private val celebrityRepository: CelebrityRepository
 ) : NewsService {
 
     override fun save(companyDto: SimpleCompanyDto, celebritySet: Set<CelebrityInfoTransfer>, news: DetailNewsDto) {
         val company: Company =
-                companyRepository.findById(companyDto.id).orElseThrow { CompanyNotFoundException() }
+            companyRepository.findById(companyDto.id).orElseThrow { CompanyNotFoundException() }
         val celebrityList: MutableList<Celebrity> = mutableListOf()
 
         celebritySet.forEach { celebrity ->
             celebrityList.add(
-                    celebrityRepository.findById(celebrity.id).orElseThrow { CelebrityNotFoundException() })
+                celebrityRepository.findById(celebrity.id).orElseThrow { CelebrityNotFoundException() })
         }
         newsRepository.save(
-                News(
-                        title = news.title,
-                        link = news.link,
-                        createdAt = news.createdAt,
-                        company = company,
-                        critical = false,
-                        celebrities = celebrityList
-                )
+            News(
+                title = news.title,
+                link = news.link,
+                createdAt = news.createdAt,
+                company = company,
+                critical = false,
+                celebrities = celebrityList
+            )
         )
     }
 
@@ -75,5 +75,9 @@ class NewsServiceImpl(
         return true
     }
 
-
+    override fun getLast3CriticalNews(companyId: Long): List<SimpleNewsDto> {
+        val company: Company =
+            companyRepository.findById(companyId).orElseThrow { CompanyNotFoundException() }
+        return newsRepository.findTop3ByCompanyAndCriticalIsTrueOrderByIdDesc(company).map { SimpleNewsDto(it.title,it.link,it.createdAt) }
+    }
 }

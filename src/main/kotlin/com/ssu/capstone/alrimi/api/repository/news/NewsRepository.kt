@@ -13,4 +13,5 @@ interface NewsRepository : JpaRepository<News, Long> {
     fun findAllByCompany(company: Company, pageable: Pageable): Page<News>
     fun findByLink(link: String): Optional<News>
     fun findAllByCompanyAndCriticalIsTrue(company: Company, pageable: Pageable): Page<News>
+    fun findTop3ByCompanyAndCriticalIsTrueOrderByIdDesc(company: Company): List<News>
 }
