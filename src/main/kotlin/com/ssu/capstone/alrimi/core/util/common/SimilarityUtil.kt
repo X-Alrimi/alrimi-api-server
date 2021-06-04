@@ -1,5 +1,6 @@
 package com.ssu.capstone.alrimi.core.util.common
 
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 object SimilarityUtil {
@@ -10,7 +11,7 @@ object SimilarityUtil {
         var D: Double = 0.0
         var E: Double = 0.0
         for (index in recentAlarm.indices) {
-            C += recentAlarm[index] * recentAlarm[index]
+            C += recentAlarm[index].pow(2.0)
             D += critical[index] * critical[index]
             E += recentAlarm[index] * critical[index]
         }

@@ -24,19 +24,21 @@ class CrawlerController(
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("크롤링한 뉴스 데이터 전달 받는 API")
-    fun getCrawledNews(@RequestBody @Valid crawledData: NewsCrawlerDto): List<CriticalNewsDto> {
+    fun getCrawledNews(@RequestBody @Valid crawledData: NewsCrawlerDto){
         val keywordList = crawlerService.findKeyword(crawledData)
-        val criticalList: List<CriticalNewsDto> = crawlerService.findCritical(keywordList)
-        newsService.changeNewsCritical(criticalList)
-        criticalList.filter { deviceService.canAlarm(it) }.forEach { alarmNews ->
-            eventPublisher.publishEvent(
-                AlarmEvent(
-                    alarmNews.news.company,
-                    alarmNews.news.title,
-                    alarmNews.news.link
+        val criticalList: List<CriticalNewsDto>? = crawlerService.findCritical(keywordList)
+        if(criticalList != null){
+            newsService.changeNewsCritical(criticalList)
+            criticalList.filter { deviceService.canAlarm(it) }.forEach { alarmNews ->
+                eventPublisher.publishEvent(
+                    AlarmEvent(
+                        alarmNews.news.company,
+                        alarmNews.news.title,
+                        alarmNews.news.link
+                    )
                 )
-            )
+            }
+
         }
-        return criticalList;
     }
 }

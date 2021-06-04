@@ -16,6 +16,7 @@ import com.ssu.capstone.alrimi.api.service.device.exception.TokenNotExistExcepti
 import com.ssu.capstone.alrimi.core.event.AlarmEvent
 import com.ssu.capstone.alrimi.core.util.common.AlarmUtil
 import com.ssu.capstone.alrimi.core.util.common.SimilarityUtil
+import org.springframework.data.redis.core.ListOperations
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,9 +26,9 @@ import java.util.concurrent.TimeUnit
 @Service
 @Transactional
 class DeviceServiceImpl(
-        private val deviceRepository: DeviceRepository,
-        private val companyRepository: CompanyRepository,
-        private val redisTemplate: RedisTemplate<String, Double>
+    private val deviceRepository: DeviceRepository,
+    private val companyRepository: CompanyRepository,
+    private val redisTemplate: RedisTemplate<String, Double>
 
 ) : DeviceService {
     /**
@@ -50,11 +51,13 @@ class DeviceServiceImpl(
     override fun sendAlarm(event: AlarmEvent) {
         val company = companyRepository.findByName(event.company).orElseThrow { CompanyNotFoundException() }
         try {
-            val multicast = MulticastMessage.builder().addAllTokens(company.devices.map { device -> device.token })
+            if (company.devices.size > 0) {
+                val multicast = MulticastMessage.builder().addAllTokens(company.devices.map { device -> device.token })
                     .setNotification(Notification(AlarmUtil.getMessageTitle(event.company), event.title))
                     .putData("link", event.link)
                     .build()
-            FirebaseMessaging.getInstance(FirebaseApp.getInstance("X-Alrimi")).sendMulticast(multicast).successCount
+                FirebaseMessaging.getInstance(FirebaseApp.getInstance("X-Alrimi")).sendMulticast(multicast).successCount
+            }
         } catch (e: FirebaseMessagingException) {
             e.printStackTrace()
         }
@@ -65,7 +68,7 @@ class DeviceServiceImpl(
      */
     override fun addKeyword(keywordDto: KeywordDto): Boolean {
         val company = companyRepository.findByName(keywordDto.keyword)
-                .orElseThrow { CompanyNotFoundException() }
+            .orElseThrow { CompanyNotFoundException() }
         val device = deviceRepository.findById(keywordDto.token).orElseThrow { TokenNotExistException() }
 
         if (!company.devices.contains(device))
@@ -87,9 +90,10 @@ class DeviceServiceImpl(
      */
     override fun canAlarm(dto: CriticalNewsDto): Boolean {
         var flag: Boolean = false
+        val listOperation : ListOperations<String,Double> = redisTemplate.opsForList()
         if (redisTemplate.hasKey(dto.news.company)) {
             val recentAlarmSimilarity: List<Double> =
-                    redisTemplate.opsForList().range(dto.news.company, 0, -1) as List<Double>
+                listOperation.range(dto.news.company, 0, -1) as List<Double>
             val similarityResult = SimilarityUtil.calculateSimilarity(recentAlarmSimilarity, dto.similarity)
 
             if (similarityResult <= SimilarityUtil.ALARM_SIMILARITY_LEVEL) {
@@ -100,8 +104,8 @@ class DeviceServiceImpl(
             flag = true
 
         if (flag) {
-            redisTemplate.opsForList().rightPushAll(dto.news.company, dto.similarity)
             redisTemplate.expire(dto.news.company, 3, TimeUnit.DAYS)
+           listOperation.rightPushAll(dto.news.company, dto.similarity)
         }
         return flag
     }
