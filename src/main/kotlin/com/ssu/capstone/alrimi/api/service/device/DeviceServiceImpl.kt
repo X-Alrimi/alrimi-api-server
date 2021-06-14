@@ -4,7 +4,6 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingException
 import com.google.firebase.messaging.MulticastMessage
-import com.google.firebase.messaging.Notification
 import com.ssu.capstone.alrimi.api.controller.dtos.news.CriticalNewsDto
 import com.ssu.capstone.alrimi.api.controller.dtos.token.KeywordDto
 import com.ssu.capstone.alrimi.api.controller.dtos.token.TokenDto
@@ -14,7 +13,6 @@ import com.ssu.capstone.alrimi.api.repository.device.DeviceRepository
 import com.ssu.capstone.alrimi.api.service.company.exception.CompanyNotFoundException
 import com.ssu.capstone.alrimi.api.service.device.exception.TokenNotExistException
 import com.ssu.capstone.alrimi.core.event.AlarmEvent
-import com.ssu.capstone.alrimi.core.util.common.AlarmUtil
 import com.ssu.capstone.alrimi.core.util.common.SimilarityUtil
 import org.springframework.data.redis.core.ListOperations
 import org.springframework.data.redis.core.RedisTemplate
@@ -53,7 +51,8 @@ class DeviceServiceImpl(
         try {
             if (company.devices.size > 0) {
                 val multicast = MulticastMessage.builder().addAllTokens(company.devices.map { device -> device.token })
-                    .setNotification(Notification(AlarmUtil.getMessageTitle(event.company), event.title))
+                    .putData("title", "X-Alrimi")
+                    .putData("body", event.title)
                     .putData("link", event.link)
                     .build()
                 FirebaseMessaging.getInstance(FirebaseApp.getInstance("X-Alrimi")).sendMulticast(multicast).successCount
@@ -62,7 +61,6 @@ class DeviceServiceImpl(
             e.printStackTrace()
         }
     }
-
     /**
      * device별 키워드 저장
      */
@@ -96,7 +94,7 @@ class DeviceServiceImpl(
             val recentAlarmSimilarity: List<Double> =
                 listOperation.range(dto.news.company, 0, -1) as List<Double>
             val similarityResult = SimilarityUtil.calculateSimilarity(recentAlarmSimilarity, dto.similarity)
-
+            println(similarityResult)
             if (similarityResult <= SimilarityUtil.ALARM_SIMILARITY_LEVEL) {
                 redisTemplate.delete(dto.news.company)
                 flag = true
@@ -108,6 +106,7 @@ class DeviceServiceImpl(
             redisTemplate.expire(dto.news.company, 3, TimeUnit.DAYS)
             listOperation.rightPushAll(dto.news.company, dto.similarity)
         }
+        println("$flag")
         return flag
     }
 
