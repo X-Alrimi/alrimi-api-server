@@ -13,4 +13,5 @@ interface DeviceService {
     fun addKeyword(keywordDto: KeywordDto): Boolean
     fun deleteKeyword(keywordDto: KeywordDto): Boolean
     fun canAlarm(news: CriticalNewsDto): Boolean
+    fun getKeyword(dto: TokenDto): List<String>
 }

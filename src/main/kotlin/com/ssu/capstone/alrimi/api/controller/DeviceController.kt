@@ -41,4 +41,11 @@ class DeviceController(private val deviceService: DeviceService) {
     fun deleteKeyword(@RequestBody @Valid keywordDto: KeywordDto): Boolean {
         return deviceService.deleteKeyword(keywordDto)
     }
+
+    @PostMapping("/mykeyword")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("현재 선택한 키워드 가져오기")
+    fun getKeyword(@RequestParam @Valid dto: TokenDto): List<String> {
+        return deviceService.getKeyword(dto)
+    }
 }

@@ -67,12 +67,12 @@ class DeviceServiceImpl(
      * device별 키워드 저장
      */
     override fun addKeyword(keywordDto: KeywordDto): Boolean {
-        val company = companyRepository.findByName(keywordDto.keyword)
-            .orElseThrow { CompanyNotFoundException() }
         val device = deviceRepository.findById(keywordDto.token).orElseThrow { TokenNotExistException() }
-
-        if (!company.devices.contains(device))
-            company.devices.add(device)
+        val company = companyRepository.findByName(keywordDto.keyword).orElseGet { null }
+        company?.let {
+            if (!company.devices.contains(device))
+                company.devices.add(device)
+        }
         return true
     }
 
@@ -80,9 +80,10 @@ class DeviceServiceImpl(
      * device별 키워드 삭제
      */
     override fun deleteKeyword(keywordDto: KeywordDto): Boolean {
-        val company = companyRepository.findByName(keywordDto.keyword).orElseThrow { CompanyNotFoundException() }
         val device = deviceRepository.findById(keywordDto.token).orElseThrow { TokenNotExistException() }
-        return company.devices.remove(device)
+        val company = companyRepository.findByName(keywordDto.keyword).orElseGet { null }
+        company?.let { company.devices.remove(device) }
+        return true
     }
 
     /**
@@ -90,7 +91,7 @@ class DeviceServiceImpl(
      */
     override fun canAlarm(dto: CriticalNewsDto): Boolean {
         var flag: Boolean = false
-        val listOperation : ListOperations<String,Double> = redisTemplate.opsForList()
+        val listOperation: ListOperations<String, Double> = redisTemplate.opsForList()
         if (redisTemplate.hasKey(dto.news.company)) {
             val recentAlarmSimilarity: List<Double> =
                 listOperation.range(dto.news.company, 0, -1) as List<Double>
@@ -105,8 +106,13 @@ class DeviceServiceImpl(
 
         if (flag) {
             redisTemplate.expire(dto.news.company, 3, TimeUnit.DAYS)
-           listOperation.rightPushAll(dto.news.company, dto.similarity)
+            listOperation.rightPushAll(dto.news.company, dto.similarity)
         }
         return flag
+    }
+
+    override fun getKeyword(dto: TokenDto): List<String> {
+        val device = deviceRepository.findById(dto.token).orElseThrow { TokenNotExistException() }
+        return device.companies.map { it.name }
     }
 }
